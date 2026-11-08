@@ -56,11 +56,11 @@ export function InvitationLetter({ revealed, guest }: { revealed: boolean; guest
               transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1] },
             },
           }}
-          className="relative"
+          className="relative grid aspect-square w-44 place-items-center sm:w-52"
         >
-          <span className="absolute inset-0 -m-6 rounded-full border border-gold/40" />
-          <span className="absolute inset-0 -m-10 rounded-full border border-gold/20" />
-          <img src={logoAsset.url} alt="Logo Yến Linh & Thế Khoa" className="relative w-32 sm:w-40" />
+          <span className="absolute inset-0 rounded-full border border-gold/50" />
+          <span className="absolute -inset-4 rounded-full border border-gold/20" />
+          <img src={logoAsset.url} alt="Logo Yến Linh & Thế Khoa" className="relative w-24 sm:w-28" />
         </motion.div>
 
         <motion.p variants={item} className="mt-16 text-eyebrow text-muted-foreground">

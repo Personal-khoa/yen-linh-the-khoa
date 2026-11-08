@@ -104,20 +104,26 @@ export function WeddingDetails() {
           className="relative z-10 flex flex-col items-center px-6 py-16 text-center sm:px-16 sm:py-20"
         >
           {/* Date block, as on the back of the card */}
-          <motion.div variants={rise} className="flex items-center gap-6 sm:gap-10 text-primary">
-            <div className="text-right">
-              <p className="text-eyebrow text-muted-foreground">{WEDDING.weekday}</p>
-              <p className="mt-1 text-eyebrow text-muted-foreground">{WEDDING.timeLabel}</p>
+          <motion.div variants={rise} className="flex items-center gap-4 text-primary sm:gap-10">
+            <div className="whitespace-nowrap text-right">
+              <p className="text-eyebrow text-[0.68rem] tracking-[0.2em] text-muted-foreground sm:text-xs">
+                {WEDDING.weekday}
+              </p>
+              <p className="mt-2 text-eyebrow text-[0.68rem] tracking-[0.2em] text-muted-foreground sm:text-xs">
+                {WEDDING.timeLabel}
+              </p>
             </div>
-            <div className="flex flex-col items-center border-x border-gold/60 px-6 sm:px-10">
+            <div className="flex flex-col items-center border-x border-gold/60 px-5 sm:px-10">
               <span className="text-numeral text-6xl leading-none sm:text-7xl">{WEDDING.dateDisplay.day}</span>
               <span className="text-numeral text-5xl leading-none sm:text-6xl">{WEDDING.dateDisplay.month}</span>
               <span className="mt-2 h-px w-12 bg-primary/50" />
               <span className="text-numeral mt-2 text-lg tracking-[0.3em]">{WEDDING.dateDisplay.year}</span>
             </div>
-            <div className="text-left">
-              <p className="text-eyebrow text-muted-foreground">Tháng</p>
-              <p className="mt-1 text-eyebrow text-muted-foreground">Mười hai</p>
+            <div className="whitespace-nowrap text-left">
+              <p className="text-eyebrow text-[0.68rem] tracking-[0.2em] text-muted-foreground sm:text-xs">Tháng</p>
+              <p className="mt-2 text-eyebrow text-[0.68rem] tracking-[0.2em] text-muted-foreground sm:text-xs">
+                Mười hai
+              </p>
             </div>
           </motion.div>
 

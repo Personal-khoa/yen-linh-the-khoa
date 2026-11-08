@@ -20,6 +20,10 @@ const PHOTOS: Photo[] = [
   { src: hall, alt: "Cô dâu chú rể trong sảnh vòm", w: 1024, h: 1536, caption: "Mãi bên nhau" },
 ];
 
+// Grid: two wide tiles + four portraits fill 2 or 4 columns with no gaps.
+const GRID_ORDER = [0, 2, 1, 3, 4, 5];
+const WIDE_TILES = new Set([1, 5]);
+
 // Each tile enters with its own movement.
 const ENTRANCES: Variants[] = [
   { hidden: { opacity: 0, y: 60 }, show: { opacity: 1, y: 0 } },
@@ -184,9 +188,10 @@ export function Gallery() {
 
       <Slideshow onOpen={setOpen} />
 
-      <div className="mx-auto mt-24 grid max-w-5xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5">
-        {PHOTOS.map((p, k) => {
-          const wide = p.w > p.h;
+      <div className="mx-auto mt-24 grid max-w-5xl grid-flow-dense grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-5">
+        {GRID_ORDER.map((k) => {
+          const p = PHOTOS[k]!;
+          const wide = WIDE_TILES.has(k);
           return (
             <motion.button
               key={p.src}
@@ -198,7 +203,7 @@ export function Gallery() {
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: (k % 3) * 0.12 }}
               className={`group relative overflow-hidden bg-blush shadow-soft ${
-                wide ? "col-span-2 aspect-[3/2]" : k % 3 === 1 ? "aspect-[3/4] sm:row-span-2 sm:aspect-auto" : "aspect-[3/4]"
+                wide ? "col-span-2 aspect-[3/2]" : "aspect-[3/4]"
               }`}
               aria-label={`Xem ảnh: ${p.caption}`}
             >
@@ -208,7 +213,7 @@ export function Gallery() {
                 width={p.w}
                 height={p.h}
                 loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1600ms] ease-out group-hover:scale-110"
+                className="absolute inset-0 h-full w-full object-cover object-[center_30%] transition-transform duration-[1600ms] ease-out group-hover:scale-110"
               />
               <span className="absolute inset-0 bg-veil opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
               <span className="absolute inset-3 border border-primary-foreground/0 transition-colors duration-700 group-hover:border-primary-foreground/60" />

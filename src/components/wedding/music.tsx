@@ -98,9 +98,10 @@ export function MusicButton({ visible }: { visible: boolean }) {
           className="fixed bottom-5 right-5 z-[60] grid h-14 w-14 place-items-center rounded-full border border-gold bg-card text-primary shadow-soft"
         >
           {playing && <span className="absolute inset-0 rounded-full border border-rose animate-ripple" />}
-          <span className={playing ? "animate-spin-slow" : ""}>
-            {playing ? <Music2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
-          </span>
+          <span
+            className={`absolute inset-1.5 rounded-full border border-dashed border-gold ${playing ? "animate-spin-slow" : "opacity-40"}`}
+          />
+          {playing ? <Music2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
           {playing && (
             <span className="absolute -top-1 -left-1 flex h-4 items-end gap-[2px] rounded-full bg-primary px-1.5 py-[3px]">
               {[0, 0.2, 0.4].map((d) => (
