@@ -1,23 +1,76 @@
+import { useCallback, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { AnimatePresence } from "motion/react";
+import { Cover } from "@/components/wedding/Cover";
+import { InvitationLetter } from "@/components/wedding/InvitationLetter";
+import { WeddingDetails } from "@/components/wedding/WeddingDetails";
+import { Gallery } from "@/components/wedding/Gallery";
+import { Closing } from "@/components/wedding/Closing";
+import { MusicButton, MusicProvider, useMusic } from "@/components/wedding/music";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  validateSearch: (s: Record<string, unknown>): { khach?: string } => {
+    const k = typeof s["khach"] === "string" ? s["khach"].trim().slice(0, 60) : "";
+    return k ? { khach: k } : {};
+  },
+  head: () => ({
+    meta: [
+      { title: "Thiệp cưới Yến Linh & Thế Khoa · 25.12.2026" },
+      {
+        name: "description",
+        content:
+          "Trân trọng kính mời Quý khách tới dự lễ vu quy của Yến Linh & Thế Khoa – 11 giờ, Thứ Sáu 25.12.2026 tại Grand View Palace Hạ Long.",
+      },
+      { property: "og:title", content: "Thiệp cưới Yến Linh & Thế Khoa · 25.12.2026" },
+      {
+        property: "og:description",
+        content: "Lễ vu quy – 11 giờ, Thứ Sáu 25.12.2026 · Hội trường Queen, Grand View Palace Hạ Long.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <MusicProvider>
+      <Invitation />
+    </MusicProvider>
+  );
+}
+
+function Invitation() {
+  const { khach } = Route.useSearch();
+  const { play } = useMusic();
+  const [coverShown, setCoverShown] = useState(true);
+  const [revealed, setRevealed] = useState(false);
+
+  const onOpenStart = useCallback(() => {
+    play();
+  }, [play]);
+
+  const onReveal = useCallback(() => setRevealed(true), []);
+  const onDone = useCallback(() => {
+    setRevealed(true);
+    setCoverShown(false);
+  }, []);
+
+  return (
+    <main className="relative">
+      <AnimatePresence>
+        {coverShown && (
+          <Cover key="cover" guest={khach} onOpenStart={onOpenStart} onReveal={onReveal} onDone={onDone} />
+        )}
+      </AnimatePresence>
+
+      <InvitationLetter revealed={revealed} guest={khach} />
+      <WeddingDetails />
+      <Gallery />
+      <Closing />
+
+      <MusicButton visible={!coverShown} />
+    </main>
   );
 }

@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Wedding content (names, date, venue, families) lives only in `src/components/wedding/wedding-data.ts`; components read from it so details change in one place.
+- The cover is three stacked layers (pink base, HTML white card, transparent lotus-sleeve PNG cut from the user's card image); keep the card between base and sleeve so the "pull out" animation reads correctly.
+- Guest personalization comes from the `?khach=` search param on `/`, so each guest can get their own link without a backend.
+- Animations use `motion/react`; background music starts inside the open gesture because browsers block autoplay.
