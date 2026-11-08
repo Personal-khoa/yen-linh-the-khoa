@@ -285,9 +285,9 @@
 
 .cover-card-names {
   position: absolute;
-  left: 5%;
+  left: 4%;
   top: 57%;
-  width: 54%;
+  width: 50%;
   color: var(--wine);
   text-align: center;
 }
