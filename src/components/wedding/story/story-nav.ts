@@ -9,7 +9,7 @@ export const TAP_MAX_MOVE = 12;
 /** Left share of the frame where a tap goes back (like Facebook stories). */
 export const BACK_ZONE = 0.3;
 /** Duration of the book page-flip between stories. */
-export const FLIP_SECONDS = 1.15;
+export const FLIP_SECONDS = 1.5;
 
 export type Gesture = {
   dx: number;

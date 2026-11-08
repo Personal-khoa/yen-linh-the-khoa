@@ -76,7 +76,7 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
     let alive = true;
     const c = animate(rot, flip.dir === 1 ? -180 : 0, {
       duration: reduce ? 0.01 : FLIP_SECONDS,
-      ease: [0.62, 0.02, 0.28, 1],
+      ease: [0.45, 0.05, 0.3, 1],
     });
     c.then(() => {
       if (!alive) return;
