@@ -2,11 +2,8 @@ import { useCallback, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { Cover } from "@/components/wedding/Cover";
-import { InvitationLetter } from "@/components/wedding/InvitationLetter";
-import { WeddingDetails } from "@/components/wedding/WeddingDetails";
-import { Gallery } from "@/components/wedding/Gallery";
-import { Closing } from "@/components/wedding/Closing";
-import { MusicButton, MusicProvider, useMusic } from "@/components/wedding/music";
+import { StoryViewer } from "@/components/wedding/story/StoryViewer";
+import { MusicProvider, useMusic } from "@/components/wedding/music";
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>): { khach?: string } => {
@@ -59,18 +56,12 @@ function Invitation() {
 
   return (
     <main className="relative">
+      <StoryViewer started={revealed} guest={khach} />
       <AnimatePresence>
         {coverShown && (
           <Cover key="cover" guest={khach} onOpenStart={onOpenStart} onReveal={onReveal} onDone={onDone} />
         )}
       </AnimatePresence>
-
-      <InvitationLetter revealed={revealed} guest={khach} />
-      <WeddingDetails />
-      <Gallery />
-      <Closing />
-
-      <MusicButton visible={!coverShown} />
     </main>
   );
 }
