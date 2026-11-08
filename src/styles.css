@@ -19,6 +19,7 @@
 
 @theme inline {
   --font-script: "Great Vibes", "Cormorant Garamond", cursive;
+  --font-names: "Pinyon Script", "Great Vibes", cursive;
   --font-serif: "Cormorant Garamond", "Times New Roman", serif;
   --font-sans: "Cormorant Garamond", "Times New Roman", serif;
 
@@ -79,6 +80,7 @@
   --rose: oklch(0.6 0.13 18);
   --wine: oklch(0.42 0.13 20);
   --gold: oklch(0.76 0.07 75);
+  --ink: oklch(0.2 0.045 18);
 
   --background: var(--ivory);
   --foreground: oklch(0.33 0.085 18);
@@ -126,6 +128,12 @@
     0 10px 24px -12px color-mix(in oklab, var(--wine) 25%, transparent);
   --shadow-soft: 0 24px 60px -28px color-mix(in oklab, var(--wine) 40%, transparent);
   --shadow-pull: 0 -18px 40px -18px color-mix(in oklab, var(--wine) 40%, transparent);
+  --gradient-story-backdrop: radial-gradient(
+      110% 80% at 50% 0%,
+      oklch(0.55 0.11 12) 0%,
+      var(--wine) 45%,
+      oklch(0.24 0.06 18) 100%
+    );
   --paper-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.2  0 0 0 0 0.2  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
@@ -161,6 +169,12 @@
   letter-spacing: 0;
 }
 
+@utility font-names {
+  font-family: var(--font-names);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
 @utility text-eyebrow {
   font-family: var(--font-serif);
   text-transform: uppercase;
@@ -188,6 +202,21 @@
 @utility bg-paper {
   background-color: var(--card);
   background-image: var(--paper-grain);
+}
+
+@utility bg-paper-blush {
+  background-color: var(--blush);
+  background-image: var(--paper-grain);
+}
+
+@utility bg-story-scrim {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--ink) 62%, transparent) 0%,
+    transparent 20%,
+    transparent 48%,
+    color-mix(in oklab, var(--ink) 78%, transparent) 100%
+  );
 }
 
 @utility shadow-card {
@@ -247,6 +276,200 @@
     background: transparent;
     color: var(--wine);
     transform: translateY(-2px);
+  }
+}
+
+@utility btn-story {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.95em 1.3em;
+  border: 1px solid var(--wine);
+  color: var(--wine);
+  background: color-mix(in oklab, var(--card) 55%, transparent);
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.68em;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.5s ease, color 0.5s ease, transform 0.5s ease;
+  &:hover {
+    background: var(--wine);
+    color: var(--ivory);
+    transform: translateY(-2px);
+  }
+}
+
+@utility btn-story-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.95em 1.3em;
+  border: 1px solid var(--wine);
+  background: var(--wine);
+  color: var(--ivory);
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.68em;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.5s ease, color 0.5s ease, transform 0.5s ease;
+  &:hover {
+    background: transparent;
+    color: var(--wine);
+    transform: translateY(-2px);
+  }
+}
+
+/* ---------- Story viewer (pages after the cover) ---------- */
+.story-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--gradient-story-backdrop);
+}
+
+.story-frame {
+  --story-radius: 0px;
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  container-type: size;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 640px) {
+  .story-frame {
+    --story-radius: 18px;
+    height: min(94svh, 980px);
+    width: calc(min(94svh, 980px) * 9 / 16);
+  }
+}
+
+/* One "u" = 1% of a 9:16 frame's width, so pages scale and never need scrolling. */
+.story-page,
+.story-chrome {
+  --u: min(1cqw, 0.5625cqh);
+  font-size: calc(var(--u) * 4.2);
+}
+
+.story-stage {
+  position: absolute;
+  inset: 0;
+  perspective: 1700px;
+}
+
+.story-leaf {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.story-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--story-radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.story-face-back {
+  transform: rotateY(180deg);
+}
+
+.story-page {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.story-shade-front,
+.story-shade-back,
+.story-under-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Light falls off toward the lifted edge of the turning page. */
+.story-shade-front {
+  background: linear-gradient(
+    270deg,
+    color-mix(in oklab, var(--ink) 70%, transparent) 0%,
+    color-mix(in oklab, var(--ink) 25%, transparent) 45%,
+    transparent 80%
+  );
+}
+
+.story-shade-back {
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--ink) 60%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+.story-under-shadow {
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--ink) 55%, transparent) 0%,
+    color-mix(in oklab, var(--ink) 20%, transparent) 60%,
+    transparent 100%
+  );
+}
+
+.story-chrome {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: 20;
+  padding: max(0.8em, env(safe-area-inset-top)) 0.9em 0;
+  pointer-events: none;
+  transition: color 0.7s ease;
+}
+
+.story-chrome button {
+  pointer-events: auto;
+}
+
+.story-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 30;
+  display: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  translate: 0 -50%;
+  place-items: center;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--card) 88%, transparent);
+  color: var(--wine);
+  box-shadow: var(--shadow-soft);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  &:hover {
+    transform: scale(1.08);
+  }
+  &:disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .story-arrow {
+    display: grid;
   }
 }
 

@@ -1,6 +1,4 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { Music2, VolumeX } from "lucide-react";
 import musicAsset from "@/assets/canon-in-d.mp3.asset.json";
 
 type MusicCtx = { playing: boolean; play: () => void; toggle: () => void };
@@ -80,41 +78,4 @@ export function useMusic() {
   const c = useContext(Ctx);
   if (!c) throw new Error("useMusic must be used inside MusicProvider");
   return c;
-}
-
-export function MusicButton({ visible }: { visible: boolean }) {
-  const { playing, toggle } = useMusic();
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.button
-          type="button"
-          onClick={toggle}
-          aria-label={playing ? "Tắt nhạc" : "Bật nhạc"}
-          initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.6 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-5 right-5 z-[60] grid h-14 w-14 place-items-center rounded-full border border-gold bg-card text-primary shadow-soft"
-        >
-          {playing && <span className="absolute inset-0 rounded-full border border-rose animate-ripple" />}
-          <span
-            className={`absolute inset-1.5 rounded-full border border-dashed border-gold ${playing ? "animate-spin-slow" : "opacity-40"}`}
-          />
-          {playing ? <Music2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
-          {playing && (
-            <span className="absolute -top-1 -left-1 flex h-4 items-end gap-[2px] rounded-full bg-primary px-1.5 py-[3px]">
-              {[0, 0.2, 0.4].map((d) => (
-                <span
-                  key={d}
-                  className="block h-full w-[2px] bg-primary-foreground animate-eq"
-                  style={{ animationDelay: `${d}s` }}
-                />
-              ))}
-            </span>
-          )}
-        </motion.button>
-      )}
-    </AnimatePresence>
-  );
 }
