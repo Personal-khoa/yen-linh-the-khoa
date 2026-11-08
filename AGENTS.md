@@ -35,3 +35,6 @@ use the editor.
 - The cover is three stacked layers (pink base, HTML white card, transparent lotus-sleeve PNG cut from the user's card image); keep the card between base and sleeve so the "pull out" animation reads correctly.
 - Guest personalization comes from the `?khach=` search param on `/`, so each guest can get their own link without a backend.
 - Animations use `motion/react`; background music starts inside the open gesture because browsers block autoplay.
+- Everything after the cover is a story viewer (`src/components/wedding/story/`): one fixed frame, horizontal tap/swipe navigation and a 3D book-flip between leaves; pages are entries in the `STORIES` list so adding or reordering pages happens in one place.
+- Story pages size everything in `em` off the frame-scaled font size (`--u` in styles.css) so a page always fits the frame and never scrolls.
+- Gesture and step rules live in `story-nav.ts` as pure functions with tests; keep UI code calling them rather than re-deriving thresholds.

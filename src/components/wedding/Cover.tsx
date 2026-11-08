@@ -122,13 +122,13 @@ export function Cover({
             <p className="text-eyebrow" style={{ fontSize: "2.4cqw" }}>
               {WEDDING.ceremony}
             </p>
-            <p className="font-script" style={{ fontSize: "8.2cqw", lineHeight: 1.15, marginTop: "2cqw" }}>
+            <p className="font-names" style={{ fontSize: "8.2cqw", lineHeight: 1.25, marginTop: "2cqw" }}>
               {WEDDING.bride}
             </p>
             <p className="font-script" style={{ fontSize: "5cqw", lineHeight: 1 }}>
               &amp;
             </p>
-            <p className="font-script" style={{ fontSize: "8.2cqw", lineHeight: 1.15 }}>
+            <p className="font-names" style={{ fontSize: "8.2cqw", lineHeight: 1.25 }}>
               {WEDDING.groom}
             </p>
             <p className="text-numeral" style={{ fontSize: "3.6cqw", marginTop: "2.4cqw", letterSpacing: "0.3em" }}>
