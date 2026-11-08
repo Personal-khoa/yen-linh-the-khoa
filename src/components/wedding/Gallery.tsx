@@ -36,7 +36,7 @@ function Slideshow({ onOpen }: { onOpen: (i: number) => void }) {
     const id = window.setInterval(() => setI((v) => (v + 1) % PHOTOS.length), 5200);
     return () => window.clearInterval(id);
   }, []);
-  const p = PHOTOS[i];
+  const p = PHOTOS[i]!;
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -94,7 +94,7 @@ function Slideshow({ onOpen }: { onOpen: (i: number) => void }) {
 }
 
 function Lightbox({ index, onClose, onNav }: { index: number; onClose: () => void; onNav: (d: number) => void }) {
-  const p = PHOTOS[index];
+  const p = PHOTOS[index]!;
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -192,7 +192,7 @@ export function Gallery() {
               key={p.src}
               type="button"
               onClick={() => setOpen(k)}
-              variants={ENTRANCES[k % ENTRANCES.length]}
+              variants={ENTRANCES[k % ENTRANCES.length]!}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.25 }}

@@ -15,7 +15,7 @@ const item: Variants = {
   show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] } },
 };
 
-export function InvitationLetter({ revealed, guest }: { revealed: boolean; guest?: string }) {
+export function InvitationLetter({ revealed, guest }: { revealed: boolean; guest?: string | undefined }) {
   return (
     <section
       id="loi-moi"

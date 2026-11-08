@@ -10,7 +10,7 @@ import { MusicButton, MusicProvider, useMusic } from "@/components/wedding/music
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>): { khach?: string } => {
-    const k = typeof s.khach === "string" ? s.khach.trim().slice(0, 60) : "";
+    const k = typeof s["khach"] === "string" ? s["khach"].trim().slice(0, 60) : "";
     return k ? { khach: k } : {};
   },
   head: () => ({

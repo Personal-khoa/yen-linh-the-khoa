@@ -15,7 +15,7 @@ export function Cover({
   onReveal,
   onDone,
 }: {
-  guest?: string;
+  guest?: string | undefined;
   /** Called synchronously inside the user gesture so music may start. */
   onOpenStart: () => void;
   /** Card is out of the sleeve; the cover starts fading into page 2. */
