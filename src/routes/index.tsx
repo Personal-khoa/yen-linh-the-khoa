@@ -51,6 +51,7 @@ function Invitation() {
     play();
   }, [play]);
 
+  const onReveal = useCallback(() => setRevealed(true), []);
   const onDone = useCallback(() => {
     setRevealed(true);
     setCoverShown(false);
@@ -59,7 +60,9 @@ function Invitation() {
   return (
     <main className="relative">
       <AnimatePresence>
-        {coverShown && <Cover key="cover" guest={khach} onOpenStart={onOpenStart} onDone={onDone} />}
+        {coverShown && (
+          <Cover key="cover" guest={khach} onOpenStart={onOpenStart} onReveal={onReveal} onDone={onDone} />
+        )}
       </AnimatePresence>
 
       <InvitationLetter revealed={revealed} guest={khach} />

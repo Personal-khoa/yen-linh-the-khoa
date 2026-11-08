@@ -12,11 +12,14 @@ const EASE = [0.65, 0, 0.35, 1] as const;
 export function Cover({
   guest,
   onOpenStart,
+  onReveal,
   onDone,
 }: {
   guest?: string;
   /** Called synchronously inside the user gesture so music may start. */
   onOpenStart: () => void;
+  /** Card is out of the sleeve; the cover starts fading into page 2. */
+  onReveal: () => void;
   onDone: () => void;
 }) {
   const [phase, setPhase] = useState<Phase>("idle");
@@ -107,7 +110,11 @@ export function Cover({
               : { duration: 1.9, ease: EASE }
           }
           onAnimationComplete={() => {
-            if (phase === "pulling") window.setTimeout(() => setPhase("leaving"), 250);
+            if (phase === "pulling")
+              window.setTimeout(() => {
+                setPhase("leaving");
+                onReveal();
+              }, 250);
           }}
         >
           <img src={logoAsset.url} alt="Logo L&K" className="cover-card-logo" draggable={false} />
