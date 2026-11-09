@@ -17,7 +17,7 @@ import { PHOTOS, PageBack, STORIES } from "./StoryPages";
 import { FLIP_SECONDS, clampStep, gestureStep } from "./story-nav";
 
 type Flip = { from: number; to: number; dir: 1 | -1 };
-type Role = "static" | "under" | "turn";
+type Role = "static" | "under" | "turn" | "idle";
 
 const isUi = (t: EventTarget | null) => t instanceof Element && !!t.closest("a,button,[data-story-ui]");
 
@@ -83,7 +83,6 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
       progress.set(0);
       setIndex(flip.to);
       setFlip(null);
-      rot.set(0);
     });
     return () => {
       alive = false;
@@ -151,23 +150,24 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
   const tone = STORIES[shown]!.tone;
   const onPhoto = tone === "photo";
 
-  const layers: { i: number; role: Role }[] = flip
-    ? flip.dir === 1
-      ? [
-          { i: flip.to, role: "under" },
-          { i: flip.from, role: "turn" },
-        ]
-      : [
-          { i: flip.from, role: "under" },
-          { i: flip.to, role: "turn" },
-        ]
-    : [{ i: index, role: "static" }];
+  // The current page plus its neighbours stay mounted, so a turn only moves layers that already exist.
+  const turnIdx = flip ? (flip.dir === 1 ? flip.from : flip.to) : -1;
+  const underIdx = flip ? (flip.dir === 1 ? flip.to : flip.from) : -1;
+  const mounted = new Set<number>([index - 1, index, index + 1]);
+  if (flip) [flip.to - 1, flip.to, flip.to + 1].forEach((i) => mounted.add(i));
+  const layers: { i: number; role: Role }[] = [...mounted]
+    .filter((i) => i >= 0 && i < count)
+    .sort((a, b) => a - b)
+    .map((i) => ({
+      i,
+      role: flip ? (i === turnIdx ? "turn" : i === underIdx ? "under" : "idle") : i === index ? "static" : "idle",
+    }));
 
   const visible = (i: number) => started && (i === index || i === flip?.to);
   const onReplay = useCallback(() => goTo(0), [goTo]);
 
   return (
-    <div className="story-shell" aria-roledescription="story">
+    <div className="story-shell" aria-roledescription="story" data-paused={!started}>
       <Petals count={12} className="opacity-60" />
       <img
         src={bloom.url}
@@ -263,7 +263,7 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
             <ChromeButton label={paused ? "Tiếp tục" : "Tạm dừng"} onClick={() => setPaused((p) => !p)}>
               {paused ? <Play className="size-[1.15em]" /> : <Pause className="size-[1.15em]" />}
             </ChromeButton>
-            <ChromeButton label={playing ? "Tắt nhạc" : "Bật nhạc"} onClick={toggle}>
+            <ChromeButton label={playing ? "Tắt nhạc" : "Bật nhạc"} onClick={toggle} musicToggle>
               {playing ? <Music2 className="size-[1.15em] animate-pulse" /> : <VolumeX className="size-[1.15em]" />}
             </ChromeButton>
           </div>
@@ -293,11 +293,22 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
   );
 }
 
-function ChromeButton({ label, onClick, children }: { label: string; onClick: () => void; children: ReactNode }) {
+function ChromeButton({
+  label,
+  onClick,
+  musicToggle,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  musicToggle?: boolean;
+  children: ReactNode;
+}) {
   return (
     <button
       type="button"
       aria-label={label}
+      data-music-toggle={musicToggle ? "" : undefined}
       onClick={onClick}
       className="grid size-[2.2em] shrink-0 place-items-center rounded-full transition-colors hover:bg-current/10"
     >
@@ -325,7 +336,12 @@ function Leaf({
 }) {
   const turning = role === "turn";
   return (
-    <motion.div className="story-leaf" style={{ rotateY: turning ? rot : 0, zIndex: turning ? 2 : 1 }}>
+    <motion.div
+      className="story-leaf"
+      data-role={role}
+      aria-hidden={role === "idle" || undefined}
+      style={{ rotateY: turning ? rot : 0, zIndex: turning ? 2 : role === "idle" ? 0 : 1 }}
+    >
       <div className="story-face">
         {children}
         {turning && <motion.div className="story-shade-front" style={{ opacity: frontShade }} />}
