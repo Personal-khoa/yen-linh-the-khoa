@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { Cover } from "@/components/wedding/Cover";
@@ -40,19 +40,28 @@ function Index() {
 
 function Invitation() {
   const { khach } = Route.useSearch();
-  const { play } = useMusic();
+  const { play, setLevel } = useMusic();
   const [coverShown, setCoverShown] = useState(true);
   const [revealed, setRevealed] = useState(false);
+
+  // Soft music as soon as the page opens (or on the first touch if the browser blocks it).
+  useEffect(() => {
+    play();
+  }, [play]);
 
   const onOpenStart = useCallback(() => {
     play();
   }, [play]);
 
-  const onReveal = useCallback(() => setRevealed(true), []);
+  const onReveal = useCallback(() => {
+    setRevealed(true);
+    setLevel("story");
+  }, [setLevel]);
   const onDone = useCallback(() => {
     setRevealed(true);
+    setLevel("story");
     setCoverShown(false);
-  }, []);
+  }, [setLevel]);
 
   return (
     <main className="relative">
