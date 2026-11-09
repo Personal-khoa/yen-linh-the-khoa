@@ -1,11 +1,3 @@
 {
-  "version": 1,
-  "asset_id": "4380883d-8c39-4185-97d8-fc28d3324fd8",
-  "project_id": "f9ada791-0dbe-4dd1-ba5d-b018c32babb6",
-  "url": "/__l5e/assets-v1/4380883d-8c39-4185-97d8-fc28d3324fd8/canon-in-d.mp3",
-  "r2_key": "a/v1/f9ada791-0dbe-4dd1-ba5d-b018c32babb6/4380883d-8c39-4185-97d8-fc28d3324fd8/canon-in-d.mp3",
-  "original_filename": "canon-in-d.mp3",
-  "size": 4235642,
-  "content_type": "audio/mpeg",
-  "created_at": "2026-11-08T14:47:26Z"
+  "url": "/assets/canon-in-d.mp3"
 }

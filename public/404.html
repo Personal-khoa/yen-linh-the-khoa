@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Thiệp cưới Yến Linh &amp; Thế Khoa</title>
+    <script>
+      // GitHub Pages SPA redirect trick:
+      // Saves the full URL into sessionStorage then redirects to the base path.
+      // The main index.html reads it back and restores the correct route.
+      var base = location.pathname.split('/').slice(0, 2).join('/');
+      sessionStorage.setItem('spa-redirect', location.href);
+      location.replace(base + '/');
+    </script>
+  </head>
+</html>
