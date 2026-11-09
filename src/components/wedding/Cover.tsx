@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { ChevronUp } from "lucide-react";
-import sleeveAsset from "@/assets/cover-sleeve.png.asset.json";
-import logoAsset from "@/assets/logo-lk.png.asset.json";
+import sleeveAsset from "@/assets/cover-sleeve.webp.asset.json";
+import logoAsset from "@/assets/logo-lk.webp.asset.json";
 import { AUTO_OPEN_MS, WEDDING } from "./wedding-data";
 import { Petals } from "./Petals";
 

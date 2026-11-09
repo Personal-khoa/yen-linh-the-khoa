@@ -8,8 +8,8 @@ import {
   type MotionValue,
 } from "motion/react";
 import { ChevronLeft, ChevronRight, Music2, Pause, Play, VolumeX } from "lucide-react";
-import logoAsset from "@/assets/logo-lk.png.asset.json";
-import bloom from "@/assets/lotus-bloom.png.asset.json";
+import logoAsset from "@/assets/logo-lk.webp.asset.json";
+import bloom from "@/assets/lotus-bloom.webp.asset.json";
 import { WEDDING } from "../wedding-data";
 import { useMusic } from "../music";
 import { Petals } from "../Petals";

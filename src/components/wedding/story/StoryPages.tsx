@@ -1,10 +1,10 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { motion, type TargetAndTransition, type Variants } from "motion/react";
 import { MapPin, RotateCcw } from "lucide-react";
-import logoAsset from "@/assets/logo-lk.png.asset.json";
-import leafTop from "@/assets/lotus-leaf-top.png.asset.json";
-import leafBottom from "@/assets/lotus-leaf-bottom.png.asset.json";
-import bloom from "@/assets/lotus-bloom.png.asset.json";
+import logoAsset from "@/assets/logo-lk.webp.asset.json";
+import leafTop from "@/assets/lotus-leaf-top.webp.asset.json";
+import leafBottom from "@/assets/lotus-leaf-bottom.webp.asset.json";
+import bloom from "@/assets/lotus-bloom.webp.asset.json";
 import pond from "@/assets/couple-lotus-pond.jpg";
 import hands from "@/assets/couple-hands-lotus.jpg";
 import halong from "@/assets/couple-halong-bay.jpg";
