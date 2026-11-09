@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { motion, type TargetAndTransition, type Variants } from "motion/react";
-import { CalendarHeart, MapPin, RotateCcw } from "lucide-react";
+import { MapPin, RotateCcw } from "lucide-react";
 import logoAsset from "@/assets/logo-lk.png.asset.json";
 import leafTop from "@/assets/lotus-leaf-top.png.asset.json";
 import leafBottom from "@/assets/lotus-leaf-bottom.png.asset.json";
@@ -11,7 +11,7 @@ import halong from "@/assets/couple-halong-bay.jpg";
 import hall from "@/assets/couple-arched-hall.jpg";
 import boat from "@/assets/couple-boat-dawn.jpg";
 import aodai from "@/assets/couple-ao-dai-red.jpg";
-import { WEDDING, getCountdown, googleCalendarUrl, type Countdown } from "../wedding-data";
+import { WEDDING, getCountdown, type Countdown } from "../wedding-data";
 import { Ornament, Petals } from "../Petals";
 
 export type StoryCtx = { visible: boolean; guest?: string | undefined; onReplay: () => void };
@@ -170,9 +170,6 @@ function DetailsPage({ visible }: StoryCtx) {
           <a href={WEDDING.venue.mapUrl} target="_blank" rel="noreferrer" className="btn-story-solid">
             <MapPin className="size-[1.2em]" /> Chỉ đường
           </a>
-          <a href={googleCalendarUrl()} target="_blank" rel="noreferrer" className="btn-story">
-            <CalendarHeart className="size-[1.2em]" /> Lưu vào lịch
-          </a>
         </motion.div>
       </motion.div>
     </div>
@@ -307,20 +304,13 @@ function PhotoPage({ visible, photo, i, seconds }: StoryCtx & { photo: Photo; i:
       />
       <div className="absolute inset-0 bg-story-scrim" />
       <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-[1.2em] bottom-[1.2em] top-[5em] rounded-t-full border border-primary-foreground/40"
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={visible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.96 }}
-        transition={{ duration: 1.6, ease: EASE, delay: 0.4 }}
-      />
-      <motion.div
         variants={stagger}
         initial="hide"
         animate={visible ? "show" : "hide"}
         className="absolute inset-x-0 bottom-[3em] z-10 flex flex-col items-center px-[2em] text-center text-primary-foreground"
       >
         <motion.p variants={rise} className="text-eyebrow text-[0.62em] opacity-85">
-          Album · {String(i + 1).padStart(2, "0")} / {String(PHOTOS.length).padStart(2, "0")}
+          {ALBUM_TITLE} · {String(i + 1).padStart(2, "0")} / {String(PHOTOS.length).padStart(2, "0")}
         </motion.p>
         <motion.p
           variants={{
@@ -332,9 +322,6 @@ function PhotoPage({ visible, photo, i, seconds }: StoryCtx & { photo: Photo; i:
           {photo.caption}
         </motion.p>
         <motion.span variants={rise} className="mt-[0.5em] block gold-line w-[6em]" />
-        <motion.p variants={rise} className="mt-[0.5em] font-names text-[1.35em]">
-          {WEDDING.bride} &amp; {WEDDING.groom}
-        </motion.p>
       </motion.div>
     </div>
   );
@@ -349,15 +336,15 @@ function ThanksPage({ visible, onReplay }: StoryCtx) {
       <Deco src={leafTop.url} visible={visible} delay={0.5} className="-left-[2.4em] -top-[0.4em] w-[10em] -scale-x-100" from={{ opacity: 0, y: -24 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
         <motion.img variants={pop} src={logoAsset.url} alt="Logo L&K" className="w-[4.6em]" draggable={false} />
-        <motion.p variants={rise} className="mt-[1.4em] font-script text-[3.1em] leading-tight text-primary">
-          Trân trọng cảm ơn
+        <motion.p variants={rise} className="mt-[0.3em] font-script text-[3.1em] leading-tight text-primary">
+          Lời cảm ơn
         </motion.p>
         <motion.div variants={rise} className="mt-[0.6em]">
           <Ornament />
         </motion.div>
         <motion.p variants={rise} className="mt-[1.2em] text-[1.05em] italic leading-relaxed text-foreground/85">
-          “Sự hiện diện cùng những lời chúc phúc tốt đẹp nhất của Quý khách sẽ là món quà vô giá và ý nghĩa đối với
-          hai gia đình chúng tôi trong ngày trọng đại này!”
+          “Sự hiện diện cùng những lời chúc tốt đẹp nhất của người thân thương sẽ là món quà vô giá và ý nghĩa đối
+          với hai gia đình trong ngày trọng đại này.”
         </motion.p>
         <motion.p variants={rise} className="mt-[1.4em] font-names text-[2em] leading-tight text-primary">
           {WEDDING.bride} &amp; {WEDDING.groom}
@@ -394,6 +381,7 @@ export function PageBack() {
 }
 
 const PHOTO_SECONDS = 6;
+const ALBUM_TITLE = "The beginning of always";
 
 export const STORIES: Story[] = [
   { id: "loi-moi", label: "Lời mời", tone: "paper", seconds: 11, render: (c) => <LetterPage {...c} /> },
@@ -402,7 +390,7 @@ export const STORIES: Story[] = [
   ...PHOTOS.map(
     (p, i): Story => ({
       id: `anh-${i + 1}`,
-      label: "Album ảnh cưới",
+      label: ALBUM_TITLE,
       tone: "photo",
       seconds: PHOTO_SECONDS,
       render: (c) => <PhotoPage {...c} photo={p} i={i} seconds={PHOTO_SECONDS} />,
