@@ -43,6 +43,13 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     return graphRef.current;
   }, []);
 
+  // "Playing" means actually audible: the element runs AND the volume graph isn't suspended by the browser.
+  const audible = useCallback(() => {
+    const a = audioRef.current;
+    const g = graphRef.current;
+    return !!a && !a.paused && (!g || g.ctx.state === "running");
+  }, []);
+
   const fadeTo = useCallback((target: number, seconds: number) => {
     const g = graphRef.current;
     if (g) {
@@ -104,7 +111,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       };
       events.forEach((ev) => window.addEventListener(ev, resume, { capture: true, passive: true }));
     });
-  }, [start]);
+  }, [start, audible]);
 
   const setLevel = useCallback(
     (l: MusicLevel) => {
@@ -126,13 +133,6 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       a.pause();
     }
   }, [start, audible]);
-
-  // "Playing" means actually audible: the element runs AND the volume graph isn't suspended by the browser.
-  const audible = useCallback(() => {
-    const a = audioRef.current;
-    const g = graphRef.current;
-    return !!a && !a.paused && (!g || g.ctx.state === "running");
-  }, []);
 
   useEffect(() => {
     const a = audioRef.current;
