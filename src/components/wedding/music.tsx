@@ -84,7 +84,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const armed = useRef(false);
   const play = useCallback(() => {
     wantsPlay.current = true;
-    if (audioRef.current && !audioRef.current.paused && graphRef.current?.ctx.state !== "suspended") return;
+    if (audible()) return;
     start().catch(() => {
       // Autoplay blocked by the browser: start on the visitor's very first contact with the page
       // (any touch, click or key), before and independently of opening the card.
@@ -118,28 +118,46 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const toggle = useCallback(() => {
     const a = audioRef.current;
     if (!a) return;
-    if (a.paused) {
+    if (!audible()) {
       wantsPlay.current = true;
       start().catch(() => undefined);
     } else {
       wantsPlay.current = false;
       a.pause();
     }
-  }, [start]);
+  }, [start, audible]);
+
+  // "Playing" means actually audible: the element runs AND the volume graph isn't suspended by the browser.
+  const audible = useCallback(() => {
+    const a = audioRef.current;
+    const g = graphRef.current;
+    return !!a && !a.paused && (!g || g.ctx.state === "running");
+  }, []);
 
   useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
-    const on = () => setPlaying(true);
-    const off = () => setPlaying(false);
-    a.addEventListener("play", on);
-    a.addEventListener("pause", off);
+    const sync = () => setPlaying(audible());
+    let ctx: AudioContext | undefined;
+    const watchCtx = () => {
+      const c = graphRef.current?.ctx;
+      if (c && c !== ctx) {
+        ctx = c;
+        c.addEventListener("statechange", sync);
+      }
+      sync();
+    };
+    a.addEventListener("play", watchCtx);
+    a.addEventListener("playing", watchCtx);
+    a.addEventListener("pause", sync);
     return () => {
-      a.removeEventListener("play", on);
-      a.removeEventListener("pause", off);
+      a.removeEventListener("play", watchCtx);
+      a.removeEventListener("playing", watchCtx);
+      a.removeEventListener("pause", sync);
+      ctx?.removeEventListener("statechange", sync);
       window.clearInterval(fadeRef.current);
     };
-  }, []);
+  }, [audible]);
 
   return (
     <Ctx.Provider value={{ playing, play, toggle, setLevel }}>
