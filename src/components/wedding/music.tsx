@@ -96,8 +96,10 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         armed.current = false;
         events.forEach((ev) => window.removeEventListener(ev, resume, true));
       };
-      const resume = () => {
+      const resume = (e: Event) => {
         if (!wantsPlay.current) return cleanup();
+        // Music buttons handle the gesture themselves (otherwise they would start and then stop it).
+        if (e.target instanceof Element && e.target.closest("[data-music-toggle]")) return;
         start().then(cleanup).catch(() => undefined);
       };
       events.forEach((ev) => window.addEventListener(ev, resume, { capture: true, passive: true }));
