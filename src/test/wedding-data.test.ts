@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AUTO_OPEN_MS, WEDDING, getCountdown } from "@/components/wedding/wedding-data";
+import { AUTO_OPEN_MS, MUSIC_VOLUME, WEDDING, getCountdown } from "@/components/wedding/wedding-data";
 
 describe("wedding details", () => {
   it("ceremony is 11:00 on Friday 25 Dec 2026, Vietnam time", () => {
@@ -15,6 +15,14 @@ describe("wedding details", () => {
 
   it("countdown is done once the ceremony starts", () => {
     expect(getCountdown(WEDDING.dateISO, new Date("2026-12-25T11:00:01+07:00")).done).toBe(true);
+  });
+
+  it("music is quieter on the cover than on the story pages", () => {
+    expect(MUSIC_VOLUME.cover).toBeLessThan(MUSIC_VOLUME.story);
+  });
+
+  it("Chỉ đường opens the Grand View Palace Hạ Long Google Maps place", () => {
+    expect(WEDDING.venue.mapUrl).toContain("google.com/maps/place/Grand+View+Palace+Ha+Long+Hotel");
   });
 
   it("cover opens on its own after 7 seconds", () => {

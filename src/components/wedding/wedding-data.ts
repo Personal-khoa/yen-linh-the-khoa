@@ -13,8 +13,7 @@ export const WEDDING = {
     name: "Grand View Palace Hạ Long",
     address: ["Đường Trần Thái Tông – Tổ 6 KP Yết Kiêu 6", "Phường Hồng Gai – TP. Quảng Ninh"],
     mapUrl:
-      "https://www.google.com/maps/search/?api=1&query=" +
-      encodeURIComponent("Grand View Palace Hạ Long, Trần Thái Tông, Hồng Gai, Quảng Ninh"),
+      "https://www.google.com/maps/place/Grand+View+Palace+Ha+Long+Hotel/@20.9633878,107.0729702,17z/data=!4m10!3m9!1s0x314a59b782ab1789:0x9ecacf03a317fe03!5m3!1s2026-11-23!4m1!1i2!8m2!3d20.9633878!4d107.0729702!16s%2Fg%2F11mvylw1p9?entry=ttu&g_ep=EgoyMDI2MTEwMy4wIKXMDSoASAFQAw%3D%3D",
   },
   brideFamily: { label: "Nhà gái", parents: ["Lương Thanh Cao", "Khương Thị Hải Yến"] },
   groomFamily: { label: "Nhà trai", parents: ["Vũ Quang Viện", "Đào Thị Xuyến"] },
@@ -44,16 +43,6 @@ export function getCountdown(targetISO: string, now: Date): Countdown {
   };
 }
 
-export function googleCalendarUrl() {
-  const start = new Date(WEDDING.dateISO);
-  const end = new Date(start.getTime() + 3 * 3600 * 1000);
-  const fmt = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
-  const params = new URLSearchParams({
-    action: "TEMPLATE",
-    text: `${WEDDING.ceremony} ${WEDDING.bride} & ${WEDDING.groom}`,
-    dates: `${fmt(start)}/${fmt(end)}`,
-    location: `${WEDDING.venue.hall}, ${WEDDING.venue.name}, ${WEDDING.venue.address.join(", ")}`,
-    details: "Trân trọng kính mời Quý khách tới dự bữa tiệc mừng lễ vu quy cùng gia đình chúng tôi.",
-  });
-  return `https://calendar.google.com/calendar/render?${params.toString()}`;
-}
+/** Background music: soft on the cover, fuller once the story pages start. */
+export const MUSIC_VOLUME = { cover: 0.18, story: 0.55 } as const;
+export type MusicLevel = keyof typeof MUSIC_VOLUME;
