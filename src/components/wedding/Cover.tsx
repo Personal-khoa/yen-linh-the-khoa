@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ChevronUp, Music2, VolumeX } from "lucide-react";
-import sleeveAsset from "@/assets/cover-sleeve.webp.asset.json";
-import logoAsset from "@/assets/logo-lk.webp.asset.json";
+import coverSleeveAsset from "@/assets/cover-sleeve.webp";
+import logoAsset from "@/assets/logo-lk.webp";
 import { AUTO_OPEN_MS, COVER_TIMING, WEDDING } from "./wedding-data";
 import { useMusic } from "./music";
 import { Petals } from "./Petals";
@@ -18,7 +18,7 @@ function useAssetsReady(maxMs: number) {
   useEffect(() => {
     let alive = true;
     const done = () => alive && setReady(true);
-    const images = [sleeveAsset.url, logoAsset.url].map((src) => {
+    const images = [coverSleeveAsset, logoAsset].map((src) => {
       const img = new Image();
       img.src = src;
       return img.decode().catch(() => undefined);
@@ -176,7 +176,7 @@ export function Cover({
                   : { duration: 3.4, repeat: Infinity, ease: "easeInOut", delay: 1.5 }
               }
             >
-              <img src={logoAsset.url} alt="Logo L&K" className="cover-card-logo" draggable={false} />
+              <img src={logoAsset} alt="Logo L&K" className="cover-card-logo" draggable={false} />
               <div className="cover-card-names">
                 <p className="text-eyebrow" style={{ fontSize: "2.4cqw" }}>
                   {WEDDING.ceremony}
@@ -199,7 +199,7 @@ export function Cover({
               </div>
             </motion.div>
 
-            <img src={sleeveAsset.url} alt="" className="cover-sleeve" draggable={false} />
+            <img src={coverSleeveAsset} alt="" className="cover-sleeve" draggable={false} />
 
             <motion.button
               type="button"

@@ -1,10 +1,10 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { motion, type TargetAndTransition, type Variants } from "motion/react";
 import { MapPin, RotateCcw } from "lucide-react";
-import logoAsset from "@/assets/logo-lk.webp.asset.json";
-import leafTop from "@/assets/lotus-leaf-top.webp.asset.json";
-import leafBottom from "@/assets/lotus-leaf-bottom.webp.asset.json";
-import bloom from "@/assets/lotus-bloom.webp.asset.json";
+import logoAsset from "@/assets/logo-lk.webp";
+import leafTop from "@/assets/lotus-leaf-top.webp";
+import leafBottom from "@/assets/lotus-leaf-bottom.webp";
+import bloom from "@/assets/lotus-bloom.webp";
 import pond from "@/assets/couple-lotus-pond.jpg";
 import hands from "@/assets/couple-hands-lotus.jpg";
 import halong from "@/assets/couple-halong-bay.jpg";
@@ -76,13 +76,13 @@ function LetterPage({ visible, guest }: StoryCtx) {
   return (
     <div className="story-page bg-paper">
       <Petals count={7} />
-      <Deco src={leafTop.url} visible={visible} className="-right-[2.4em] -top-[0.6em] w-[12em]" from={{ opacity: 0, x: 30, rotate: 8 }} />
-      <Deco src={leafBottom.url} visible={visible} delay={0.5} className="-bottom-[1em] -left-[2.4em] w-[12em]" from={{ opacity: 0, x: -30, rotate: -8 }} />
+      <Deco src={leafTop} visible={visible} className="-right-[2.4em] -top-[0.6em] w-[12em]" from={{ opacity: 0, x: 30, rotate: 8 }} />
+      <Deco src={leafBottom} visible={visible} delay={0.5} className="-bottom-[1em] -left-[2.4em] w-[12em]" from={{ opacity: 0, x: -30, rotate: -8 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
         <motion.div variants={pop} className="relative grid aspect-square w-[7.6em] place-items-center">
           <span className="absolute inset-0 rounded-full border border-gold/60" />
           <span className="absolute -inset-[0.7em] rounded-full border border-gold/25" />
-          <img src={logoAsset.url} alt="Logo Yến Linh & Thế Khoa" className="relative w-[4.2em]" draggable={false} />
+          <img src={logoAsset} alt="Logo Yến Linh & Thế Khoa" className="relative w-[4.2em]" draggable={false} />
         </motion.div>
         <motion.p variants={rise} className="mt-[2.6em] text-eyebrow text-[0.7em] text-muted-foreground">
           Trân trọng kính mời
@@ -120,8 +120,8 @@ function DetailsPage({ visible }: StoryCtx) {
   const side = "text-eyebrow text-[0.6em] tracking-[0.18em] text-muted-foreground";
   return (
     <div className="story-page bg-paper-blush">
-      <Deco src={leafTop.url} visible={visible} className="-right-[2em] -top-[0.4em] w-[10em]" imgClassName="animate-float-slow" from={{ opacity: 0, y: -20 }} />
-      <Deco src={bloom.url} visible={visible} delay={0.6} className="-bottom-[0.6em] -left-[1.6em] w-[11em]" from={{ opacity: 0, x: -30, rotate: -6 }} />
+      <Deco src={leafTop} visible={visible} className="-right-[2em] -top-[0.4em] w-[10em]" imgClassName="animate-float-slow" from={{ opacity: 0, y: -20 }} />
+      <Deco src={bloom} visible={visible} delay={0.6} className="-bottom-[0.6em] -left-[1.6em] w-[11em]" from={{ opacity: 0, x: -30, rotate: -6 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
         <motion.p variants={rise} className="text-eyebrow text-[0.66em] text-muted-foreground">
           Save the date
@@ -225,8 +225,8 @@ function FamilyPage({ visible }: StoryCtx) {
   return (
     <div className="story-page bg-paper">
       <Petals count={6} />
-      <Deco src={bloom.url} visible={visible} className="-right-[2.6em] -top-[0.4em] w-[10em]" imgClassName="-scale-x-100" from={{ opacity: 0, y: -24 }} />
-      <Deco src={leafBottom.url} visible={visible} delay={0.5} className="-bottom-[1.2em] -left-[2em] w-[10em]" imgClassName="animate-sway" from={{ opacity: 0, x: -24 }} />
+      <Deco src={bloom} visible={visible} className="-right-[2.6em] -top-[0.4em] w-[10em]" imgClassName="-scale-x-100" from={{ opacity: 0, y: -24 }} />
+      <Deco src={leafBottom} visible={visible} delay={0.5} className="-bottom-[1.2em] -left-[2em] w-[10em]" imgClassName="animate-sway" from={{ opacity: 0, x: -24 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
         <motion.p variants={rise} className="text-eyebrow text-[0.66em] text-muted-foreground">
           Hai gia đình
@@ -339,10 +339,10 @@ function ThanksPage({ visible, onReplay }: StoryCtx) {
   return (
     <div className="story-page bg-paper-blush">
       <Petals count={10} />
-      <Deco src={bloom.url} visible={visible} className="-bottom-[0.4em] -right-[2em] w-[12em]" imgClassName="-rotate-6" from={{ opacity: 0, y: 30 }} />
-      <Deco src={leafTop.url} visible={visible} delay={0.5} className="-left-[2.4em] -top-[0.4em] w-[10em]" imgClassName="-scale-x-100" from={{ opacity: 0, y: -24 }} />
+      <Deco src={bloom} visible={visible} className="-bottom-[0.4em] -right-[2em] w-[12em]" imgClassName="-rotate-6" from={{ opacity: 0, y: 30 }} />
+      <Deco src={leafTop} visible={visible} delay={0.5} className="-left-[2.4em] -top-[0.4em] w-[10em]" imgClassName="-scale-x-100" from={{ opacity: 0, y: -24 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
-        <motion.img variants={pop} src={logoAsset.url} alt="Logo L&K" className="w-[4.6em]" draggable={false} />
+        <motion.img variants={pop} src={logoAsset} alt="Logo L&K" className="w-[4.6em]" draggable={false} />
         <motion.p variants={rise} className="mt-[0.3em] font-script text-[3.1em] leading-tight text-primary">
           Lời cảm ơn
         </motion.p>
@@ -377,7 +377,7 @@ export function PageBack() {
   return (
     <div className="story-page bg-paper-blush">
       <img
-        src={logoAsset.url}
+        src={logoAsset}
         alt=""
         aria-hidden
         draggable={false}

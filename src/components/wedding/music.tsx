@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import musicAsset from "@/assets/canon-in-d.mp3.asset.json";
+import musicUrl from "@/assets/canon-in-d.mp3";
 import { MUSIC_VOLUME, type MusicLevel } from "./wedding-data";
 
 type MusicCtx = {
@@ -161,7 +161,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
 
   return (
     <Ctx.Provider value={{ playing, play, toggle, setLevel }}>
-      <audio ref={audioRef} src={musicAsset.url} loop preload="auto" />
+      <audio ref={audioRef} src={musicUrl} loop preload="auto" />
       {children}
     </Ctx.Provider>
   );

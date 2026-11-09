@@ -20,12 +20,6 @@ dist-ssr
 .wrangler/
 .dev.vars
 
-# Local media assets (too large for git — place files manually in public/assets/)
-public/assets/*.webp
-public/assets/*.mp3
-public/assets/*.jpg
-public/assets/*.png
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -8,8 +8,8 @@ import {
   type MotionValue,
 } from "motion/react";
 import { ChevronLeft, ChevronRight, Music2, Pause, Play, VolumeX } from "lucide-react";
-import logoAsset from "@/assets/logo-lk.webp.asset.json";
-import bloom from "@/assets/lotus-bloom.webp.asset.json";
+import logoAsset from "@/assets/logo-lk.webp";
+import bloom from "@/assets/lotus-bloom.webp";
 import { WEDDING } from "../wedding-data";
 import { useMusic } from "../music";
 import { Petals } from "../Petals";
@@ -170,7 +170,7 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
     <div className="story-shell" aria-roledescription="story" data-paused={!started}>
       <Petals count={12} className="opacity-60" />
       <img
-        src={bloom.url}
+        src={bloom}
         alt=""
         aria-hidden
         className="pointer-events-none absolute -bottom-10 -left-16 hidden w-[28rem] opacity-25 mix-blend-screen sm:block"
@@ -250,7 +250,7 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
           </div>
           <div className="mt-[0.75em] flex items-center gap-[0.6em]">
             <span className="grid size-[2.5em] shrink-0 place-items-center rounded-full bg-card ring-1 ring-gold">
-              <img src={logoAsset.url} alt="" className="w-[1.35em]" draggable={false} />
+              <img src={logoAsset} alt="" className="w-[1.35em]" draggable={false} />
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate font-names text-[1.35em] leading-[1.3]">
