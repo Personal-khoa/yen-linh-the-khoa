@@ -81,23 +81,26 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     });
   }, [ensureGraph, fadeTo]);
 
+  const armed = useRef(false);
   const play = useCallback(() => {
     wantsPlay.current = true;
+    if (audioRef.current && !audioRef.current.paused && graphRef.current?.ctx.state !== "suspended") return;
     start().catch(() => {
-      // Autoplay blocked: start on the visitor's first touch, click or key press.
-      // Keep listening until one gesture actually starts the sound (iOS only honours some events).
+      // Autoplay blocked by the browser: start on the visitor's very first contact with the page
+      // (any touch, click or key), before and independently of opening the card.
+      // Different browsers grant permission on different events, so listen to all of them.
+      if (armed.current) return;
+      armed.current = true;
+      const events = ["pointerdown", "pointerup", "mousedown", "touchstart", "touchend", "click", "keydown"] as const;
+      const cleanup = () => {
+        armed.current = false;
+        events.forEach((ev) => window.removeEventListener(ev, resume, true));
+      };
       const resume = () => {
         if (!wantsPlay.current) return cleanup();
         start().then(cleanup).catch(() => undefined);
       };
-      const cleanup = () => {
-        window.removeEventListener("pointerdown", resume);
-        window.removeEventListener("keydown", resume);
-        window.removeEventListener("touchend", resume);
-      };
-      window.addEventListener("pointerdown", resume);
-      window.addEventListener("keydown", resume);
-      window.addEventListener("touchend", resume);
+      events.forEach((ev) => window.addEventListener(ev, resume, { capture: true, passive: true }));
     });
   }, [start]);
 
