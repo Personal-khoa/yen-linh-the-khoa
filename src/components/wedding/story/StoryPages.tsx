@@ -24,43 +24,50 @@ export type Story = {
 };
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const stagger: Variants = { hide: {}, show: { transition: { staggerChildren: 0.13, delayChildren: 0.3 } } };
+// Entrances only animate opacity and transform: both run on the GPU, so they stay smooth on phones
+// even while a page is being turned (blur / letter-spacing / object-position would repaint every frame).
+const stagger: Variants = {
+  hide: { transition: { duration: 0 } },
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.25 } },
+};
 const rise: Variants = {
-  hide: { opacity: 0, y: 18, filter: "blur(5px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1.1, ease: EASE } },
+  hide: { opacity: 0, y: 16, transition: { duration: 0 } },
+  show: { opacity: 1, y: 0, transition: { duration: 1, ease: EASE } },
 };
 const pop: Variants = {
-  hide: { opacity: 0, scale: 0.75, filter: "blur(8px)" },
-  show: { opacity: 1, scale: 1, filter: "blur(0px)", transition: { duration: 1.5, ease: EASE } },
+  hide: { opacity: 0, scale: 0.86, transition: { duration: 0 } },
+  show: { opacity: 1, scale: 1, transition: { duration: 1.3, ease: EASE } },
 };
 
 const CONTENT =
   "relative z-10 flex h-full flex-col items-center justify-center px-[2.1em] pb-[3.2em] pt-[4.6em] text-center";
 
+/** Lotus decoration: the wrapper does the entrance, the image keeps its own looping sway/float. */
 function Deco({
   src,
   className,
+  imgClassName = "",
   from,
   visible,
   delay = 0.3,
 }: {
   src: string;
   className: string;
+  imgClassName?: string;
   from: TargetAndTransition;
   visible: boolean;
   delay?: number;
 }) {
   return (
-    <motion.img
-      src={src}
-      alt=""
+    <motion.div
       aria-hidden
-      draggable={false}
       className={`pointer-events-none absolute ${className}`}
       initial={from}
-      animate={visible ? { opacity: 0.65, x: 0, y: 0, rotate: 0 } : from}
+      animate={visible ? { opacity: 0.65, x: 0, y: 0, rotate: 0 } : { ...from, transition: { duration: 0 } }}
       transition={{ duration: 1.8, ease: EASE, delay }}
-    />
+    >
+      <img src={src} alt="" draggable={false} className={`block w-full ${imgClassName}`} />
+    </motion.div>
   );
 }
 
