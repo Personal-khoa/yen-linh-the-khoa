@@ -389,6 +389,18 @@
   transform: rotateY(180deg);
 }
 
+/* Pre-mounted neighbour pages wait off-screen, so a turn never has to build a page mid-flip. */
+.story-leaf[data-role="idle"] {
+  visibility: hidden;
+}
+
+/* Freeze looping decorations where nobody can see them (behind the cover, on hidden or turning pages). */
+.story-shell[data-paused="true"] *,
+.story-leaf[data-role="idle"] *,
+.story-leaf[data-role="turn"] * {
+  animation-play-state: paused !important;
+}
+
 .story-page {
   position: absolute;
   inset: 0;
@@ -496,6 +508,7 @@
   height: 95.9%;
   background-color: var(--card);
   background-image: var(--paper-grain);
+  box-shadow: var(--shadow-pull);
   will-change: transform;
 }
 

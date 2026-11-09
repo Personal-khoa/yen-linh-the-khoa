@@ -22,6 +22,15 @@ export const WEDDING = {
 /** How long the cover waits for a tap before pulling the card out by itself. */
 export const AUTO_OPEN_MS = 7000;
 
+/** Cover hand-off: the fade into the story starts before the pull ends so the motion never stalls. */
+export const COVER_TIMING = {
+  /** Longest wait for the card artwork and fonts before showing the cover anyway. */
+  maxWaitMs: 2600,
+  pullMs: 1800,
+  revealAfterMs: 1350,
+  fadeMs: 1000,
+} as const;
+
 export type Countdown = {
   days: number;
   hours: number;
