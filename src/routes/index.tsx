@@ -4,6 +4,8 @@ import { AnimatePresence } from "motion/react";
 import { Cover } from "@/components/wedding/Cover";
 import { StoryViewer } from "@/components/wedding/story/StoryViewer";
 import { MusicProvider, useMusic } from "@/components/wedding/music";
+import sleeveAsset from "@/assets/cover-sleeve.webp.asset.json";
+import logoAsset from "@/assets/logo-lk.webp.asset.json";
 
 export const Route = createFileRoute("/")({
   validateSearch: (s: Record<string, unknown>): { khach?: string } => {
@@ -25,6 +27,11 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    // Fetch the cover artwork right away so the opening animation starts without waiting.
+    links: [
+      { rel: "preload", as: "image", href: sleeveAsset.url, type: "image/webp" },
+      { rel: "preload", as: "image", href: logoAsset.url, type: "image/webp" },
     ],
   }),
   component: Index,

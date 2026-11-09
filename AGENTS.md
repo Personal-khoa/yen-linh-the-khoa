@@ -34,7 +34,7 @@ use the editor.
 - Wedding content (names, date, venue, families) lives only in `src/components/wedding/wedding-data.ts`; components read from it so details change in one place.
 - The cover is three stacked layers (pink base, HTML white card, transparent lotus-sleeve PNG cut from the user's card image); keep the card between base and sleeve so the "pull out" animation reads correctly.
 - Guest personalization comes from the `?khach=` search param on `/`, so each guest can get their own link without a backend.
-- Animations use `motion/react`; background music starts inside the open gesture because browsers block autoplay.
+- Animations use `motion/react` and only animate opacity/transform (no blur, letter-spacing or object-position), so they stay GPU-composited on phones. Music tries to autoplay on load; when the browser blocks it, a capture-phase listener starts it on the first touch/click/key anywhere, skipping `[data-music-toggle]` buttons which handle the gesture themselves.
 - Everything after the cover is a story viewer (`src/components/wedding/story/`): one fixed frame, horizontal tap/swipe navigation and a 3D book-flip between leaves; pages are entries in the `STORIES` list so adding or reordering pages happens in one place.
 - Story pages size everything in `em` off the frame-scaled font size (`--u` in styles.css) so a page always fits the frame and never scrolls.
 - Gesture and step rules live in `story-nav.ts` as pure functions with tests; keep UI code calling them rather than re-deriving thresholds.

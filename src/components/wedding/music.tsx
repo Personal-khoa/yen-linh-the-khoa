@@ -43,6 +43,13 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     return graphRef.current;
   }, []);
 
+  // "Playing" means actually audible: the element runs AND the volume graph isn't suspended by the browser.
+  const audible = useCallback(() => {
+    const a = audioRef.current;
+    const g = graphRef.current;
+    return !!a && !a.paused && (!g || g.ctx.state === "running");
+  }, []);
+
   const fadeTo = useCallback((target: number, seconds: number) => {
     const g = graphRef.current;
     if (g) {
@@ -81,25 +88,30 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     });
   }, [ensureGraph, fadeTo]);
 
+  const armed = useRef(false);
   const play = useCallback(() => {
     wantsPlay.current = true;
+    if (audible()) return;
     start().catch(() => {
-      // Autoplay blocked: start on the visitor's first touch, click or key press.
-      // Keep listening until one gesture actually starts the sound (iOS only honours some events).
-      const resume = () => {
+      // Autoplay blocked by the browser: start on the visitor's very first contact with the page
+      // (any touch, click or key), before and independently of opening the card.
+      // Different browsers grant permission on different events, so listen to all of them.
+      if (armed.current) return;
+      armed.current = true;
+      const events = ["pointerdown", "pointerup", "mousedown", "touchstart", "touchend", "click", "keydown"] as const;
+      const cleanup = () => {
+        armed.current = false;
+        events.forEach((ev) => window.removeEventListener(ev, resume, true));
+      };
+      const resume = (e: Event) => {
         if (!wantsPlay.current) return cleanup();
+        // Music buttons handle the gesture themselves (otherwise they would start and then stop it).
+        if (e.target instanceof Element && e.target.closest("[data-music-toggle]")) return;
         start().then(cleanup).catch(() => undefined);
       };
-      const cleanup = () => {
-        window.removeEventListener("pointerdown", resume);
-        window.removeEventListener("keydown", resume);
-        window.removeEventListener("touchend", resume);
-      };
-      window.addEventListener("pointerdown", resume);
-      window.addEventListener("keydown", resume);
-      window.addEventListener("touchend", resume);
+      events.forEach((ev) => window.addEventListener(ev, resume, { capture: true, passive: true }));
     });
-  }, [start]);
+  }, [start, audible]);
 
   const setLevel = useCallback(
     (l: MusicLevel) => {
@@ -113,28 +125,39 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const toggle = useCallback(() => {
     const a = audioRef.current;
     if (!a) return;
-    if (a.paused) {
+    if (!audible()) {
       wantsPlay.current = true;
       start().catch(() => undefined);
     } else {
       wantsPlay.current = false;
       a.pause();
     }
-  }, [start]);
+  }, [start, audible]);
 
   useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
-    const on = () => setPlaying(true);
-    const off = () => setPlaying(false);
-    a.addEventListener("play", on);
-    a.addEventListener("pause", off);
+    const sync = () => setPlaying(audible());
+    let ctx: AudioContext | undefined;
+    const watchCtx = () => {
+      const c = graphRef.current?.ctx;
+      if (c && c !== ctx) {
+        ctx = c;
+        c.addEventListener("statechange", sync);
+      }
+      sync();
+    };
+    a.addEventListener("play", watchCtx);
+    a.addEventListener("playing", watchCtx);
+    a.addEventListener("pause", sync);
     return () => {
-      a.removeEventListener("play", on);
-      a.removeEventListener("pause", off);
+      a.removeEventListener("play", watchCtx);
+      a.removeEventListener("playing", watchCtx);
+      a.removeEventListener("pause", sync);
+      ctx?.removeEventListener("statechange", sync);
       window.clearInterval(fadeRef.current);
     };
-  }, []);
+  }, [audible]);
 
   return (
     <Ctx.Provider value={{ playing, play, toggle, setLevel }}>

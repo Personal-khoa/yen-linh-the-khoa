@@ -29,3 +29,10 @@ describe("wedding details", () => {
     expect(AUTO_OPEN_MS).toBe(7000);
   });
 });
+
+describe("cover opening timing", () => {
+  it("fade into the story starts before the card finishes sliding out", async () => {
+    const { COVER_TIMING } = await import("@/components/wedding/wedding-data");
+    expect(COVER_TIMING.revealAfterMs).toBeLessThan(COVER_TIMING.pullMs);
+  });
+});
