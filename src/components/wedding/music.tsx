@@ -85,9 +85,10 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     wantsPlay.current = true;
     start().catch(() => {
       // Autoplay blocked: start on the visitor's first touch, click or key press.
+      // Keep listening until one gesture actually starts the sound (iOS only honours some events).
       const resume = () => {
-        cleanup();
-        if (wantsPlay.current) start().catch(() => undefined);
+        if (!wantsPlay.current) return cleanup();
+        start().then(cleanup).catch(() => undefined);
       };
       const cleanup = () => {
         window.removeEventListener("pointerdown", resume);
