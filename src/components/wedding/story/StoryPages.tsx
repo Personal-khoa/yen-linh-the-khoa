@@ -120,7 +120,7 @@ function DetailsPage({ visible }: StoryCtx) {
   const side = "text-eyebrow text-[0.6em] tracking-[0.18em] text-muted-foreground";
   return (
     <div className="story-page bg-paper-blush">
-      <Deco src={leafTop.url} visible={visible} className="-right-[2em] -top-[0.4em] w-[10em] animate-float-slow" from={{ opacity: 0, y: -20 }} />
+      <Deco src={leafTop.url} visible={visible} className="-right-[2em] -top-[0.4em] w-[10em]" imgClassName="animate-float-slow" from={{ opacity: 0, y: -20 }} />
       <Deco src={bloom.url} visible={visible} delay={0.6} className="-bottom-[0.6em] -left-[1.6em] w-[11em]" from={{ opacity: 0, x: -30, rotate: -6 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
         <motion.p variants={rise} className="text-eyebrow text-[0.66em] text-muted-foreground">
@@ -225,8 +225,8 @@ function FamilyPage({ visible }: StoryCtx) {
   return (
     <div className="story-page bg-paper">
       <Petals count={6} />
-      <Deco src={bloom.url} visible={visible} className="-right-[2.6em] -top-[0.4em] w-[10em] -scale-x-100" from={{ opacity: 0, y: -24 }} />
-      <Deco src={leafBottom.url} visible={visible} delay={0.5} className="-bottom-[1.2em] -left-[2em] w-[10em] animate-sway" from={{ opacity: 0, x: -24 }} />
+      <Deco src={bloom.url} visible={visible} className="-right-[2.6em] -top-[0.4em] w-[10em]" imgClassName="-scale-x-100" from={{ opacity: 0, y: -24 }} />
+      <Deco src={leafBottom.url} visible={visible} delay={0.5} className="-bottom-[1.2em] -left-[2em] w-[10em]" imgClassName="animate-sway" from={{ opacity: 0, x: -24 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
         <motion.p variants={rise} className="text-eyebrow text-[0.66em] text-muted-foreground">
           Hai gia đình
@@ -279,7 +279,7 @@ export const PHOTOS: Photo[] = [
 // Each photo moves differently: zoom out, pan, zoom in, drift, tilt, glide.
 const KEN_BURNS: { from: TargetAndTransition; to: TargetAndTransition }[] = [
   { from: { scale: 1.22, y: "3%" }, to: { scale: 1.04, y: "-1%" } },
-  { from: { scale: 1.06, objectPosition: "15% 50%" }, to: { scale: 1.06, objectPosition: "85% 50%" } },
+  { from: { scale: 1.18, x: "5%", y: "2%" }, to: { scale: 1.08, x: "-3%", y: "-1%" } },
   { from: { scale: 1.02 }, to: { scale: 1.22 } },
   { from: { scale: 1.16, x: "-4%" }, to: { scale: 1.16, x: "4%" } },
   { from: { scale: 1.26, rotate: -1.5 }, to: { scale: 1.06, rotate: 0.5 } },
@@ -288,8 +288,8 @@ const KEN_BURNS: { from: TargetAndTransition; to: TargetAndTransition }[] = [
 
 const CAPTION_IN: Variants[] = [
   { hide: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0 } },
-  { hide: { opacity: 0, letterSpacing: "0.25em" }, show: { opacity: 1, letterSpacing: "0em" } },
-  { hide: { opacity: 0, filter: "blur(12px)" }, show: { opacity: 1, filter: "blur(0px)" } },
+  { hide: { opacity: 0, scale: 1.12 }, show: { opacity: 1, scale: 1 } },
+  { hide: { opacity: 0, y: 12, scale: 0.96 }, show: { opacity: 1, y: 0, scale: 1 } },
   { hide: { opacity: 0, x: -40 }, show: { opacity: 1, x: 0 } },
   { hide: { opacity: 0, scale: 0.8 }, show: { opacity: 1, scale: 1 } },
   { hide: { opacity: 0, y: -24 }, show: { opacity: 1, y: 0 } },
@@ -304,9 +304,9 @@ function PhotoPage({ visible, photo, i, seconds }: StoryCtx & { photo: Photo; i:
         src={photo.src}
         alt={photo.alt}
         draggable={false}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover will-change-transform"
         initial={ken.from}
-        animate={visible ? ken.to : ken.from}
+        animate={visible ? ken.to : { ...ken.from, transition: { duration: 0 } }}
         transition={{ duration: seconds + 1.5, ease: "linear" }}
       />
       <div className="absolute inset-0 bg-story-scrim" />
@@ -321,7 +321,7 @@ function PhotoPage({ visible, photo, i, seconds }: StoryCtx & { photo: Photo; i:
         </motion.p>
         <motion.p
           variants={{
-            hide: caption["hide"]!,
+            hide: { ...(caption["hide"] as object), transition: { duration: 0 } },
             show: { ...(caption["show"] as object), transition: { duration: 1.3, ease: EASE } },
           }}
           className="mt-[0.3em] font-script text-[2.8em] leading-tight"
@@ -339,8 +339,8 @@ function ThanksPage({ visible, onReplay }: StoryCtx) {
   return (
     <div className="story-page bg-paper-blush">
       <Petals count={10} />
-      <Deco src={bloom.url} visible={visible} className="-bottom-[0.4em] -right-[2em] w-[12em] -rotate-6" from={{ opacity: 0, y: 30 }} />
-      <Deco src={leafTop.url} visible={visible} delay={0.5} className="-left-[2.4em] -top-[0.4em] w-[10em] -scale-x-100" from={{ opacity: 0, y: -24 }} />
+      <Deco src={bloom.url} visible={visible} className="-bottom-[0.4em] -right-[2em] w-[12em]" imgClassName="-rotate-6" from={{ opacity: 0, y: 30 }} />
+      <Deco src={leafTop.url} visible={visible} delay={0.5} className="-left-[2.4em] -top-[0.4em] w-[10em]" imgClassName="-scale-x-100" from={{ opacity: 0, y: -24 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
         <motion.img variants={pop} src={logoAsset.url} alt="Logo L&K" className="w-[4.6em]" draggable={false} />
         <motion.p variants={rise} className="mt-[0.3em] font-script text-[3.1em] leading-tight text-primary">
