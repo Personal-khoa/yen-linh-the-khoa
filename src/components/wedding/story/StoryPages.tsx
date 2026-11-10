@@ -316,9 +316,9 @@ function PhotoPage({ visible, photo, i, seconds }: StoryCtx & { photo: Photo; i:
         animate={visible ? "show" : "hide"}
         className="absolute inset-x-0 bottom-[3em] z-10 flex flex-col items-center px-[2em] text-center text-primary-foreground"
       >
-        <motion.p variants={rise} className="text-eyebrow text-[0.62em] opacity-85">
+        {/* <motion.p variants={rise} className="text-eyebrow text-[0.62em] opacity-85">
           {ALBUM_TITLE} · {String(i + 1).padStart(2, "0")} / {String(PHOTOS.length).padStart(2, "0")}
-        </motion.p>
+        </motion.p> */}
         <motion.p
           variants={{
             hide: { ...(caption["hide"] as object), transition: { duration: 0 } },
@@ -388,7 +388,7 @@ export function PageBack() {
 }
 
 const PHOTO_SECONDS = 6;
-const ALBUM_TITLE = "KHOẢNH KHẮC CHUNG ĐÔI";
+const ALBUM_TITLE = "";
 
 export const STORIES: Story[] = [
   { id: "loi-moi", label: "Lời mời", tone: "paper", seconds: 11, render: (c) => <LetterPage {...c} /> },
