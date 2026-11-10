@@ -84,7 +84,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     const resume = g && g.ctx.state !== "running" ? g.ctx.resume() : Promise.resolve();
     return Promise.all([a.play(), resume]).then(() => {
       if (g && g.ctx.state !== "running") throw new Error("audio context suspended");
-      fadeTo(MUSIC_VOLUME[level.current], wasPaused ? 2.5 : 1.5);
+      fadeTo(MUSIC_VOLUME[level.current], wasPaused ? 1.2 : 0.8);
     });
   }, [ensureGraph, fadeTo]);
 

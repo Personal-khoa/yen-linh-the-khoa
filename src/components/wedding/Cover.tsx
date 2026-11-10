@@ -56,12 +56,20 @@ export function Cover({
 }) {
   const ready = useAssetsReady(COVER_TIMING.maxWaitMs);
   const reduce = useReducedMotion();
-  const { playing, toggle } = useMusic();
+  const { playing, toggle, play } = useMusic();
   const [phase, setPhase] = useState<Phase>("idle");
   const started = useRef(false);
   const readyRef = useRef(false);
   readyRef.current = ready;
   const touchY = useRef<number | null>(null);
+
+  // Attempt autoplay immediately on mount — browser will grant it if the user
+  // has already interacted with the page (e.g. clicked a link to open it).
+  // If blocked, music.tsx arms a capture-phase listener so the first touch/click
+  // anywhere on the cover triggers playback automatically.
+  useEffect(() => {
+    play();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const open = useCallback(() => {
     if (started.current || !readyRef.current) return;

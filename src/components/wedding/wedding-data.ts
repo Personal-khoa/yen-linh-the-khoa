@@ -53,5 +53,5 @@ export function getCountdown(targetISO: string, now: Date): Countdown {
 }
 
 /** Background music: soft on the cover, fuller once the story pages start. */
-export const MUSIC_VOLUME = { cover: 0.18, story: 0.55 } as const;
+export const MUSIC_VOLUME = { cover: 0.45, story: 0.72 } as const;
 export type MusicLevel = keyof typeof MUSIC_VOLUME;
