@@ -268,12 +268,12 @@ function FamilyPage({ visible }: StoryCtx) {
 /* ---------- 4 · Album ---------- */
 type Photo = { src: string; alt: string; caption: string };
 export const PHOTOS: Photo[] = [
-  { src: pond, alt: "Cô dâu chú rể bên hồ sen", caption: "Bên hồ sen" },
-  { src: halong, alt: "Cô dâu chú rể trên đỉnh núi nhìn vịnh Hạ Long", caption: "Hạ Long hoàng hôn" },
-  { src: hands, alt: "Đôi bàn tay với nhẫn cưới và đoá sen", caption: "Trao nhau lời hứa" },
-  { src: aodai, alt: "Cô dâu chú rể trong áo dài đỏ", caption: "Áo dài ngày cưới" },
-  { src: boat, alt: "Cô dâu chú rể trên thuyền giữa đầm sen", caption: "Sương sớm" },
-  { src: hall, alt: "Cô dâu chú rể trong sảnh vòm", caption: "Mãi bên nhau" },
+  { src: pond, alt: "Cô dâu chú rể bên hồ sen", caption: "" },
+  { src: halong, alt: "Cô dâu chú rể trên đỉnh núi nhìn vịnh Hạ Long", caption: "" },
+  { src: hands, alt: "Đôi bàn tay với nhẫn cưới và đoá sen", caption: "" },
+  { src: aodai, alt: "Cô dâu chú rể trong áo dài đỏ", caption: "" },
+  { src: boat, alt: "Cô dâu chú rể trên thuyền giữa đầm sen", caption: "" },
+  { src: hall, alt: "Cô dâu chú rể trong sảnh vòm", caption: "" },
 ];
 
 // Each photo moves differently: zoom out, pan, zoom in, drift, tilt, glide.
@@ -388,7 +388,7 @@ export function PageBack() {
 }
 
 const PHOTO_SECONDS = 6;
-const ALBUM_TITLE = "The beginning of always";
+const ALBUM_TITLE = "KHOẢNH KHẮC CHUNG ĐÔI";
 
 export const STORIES: Story[] = [
   { id: "loi-moi", label: "Lời mời", tone: "paper", seconds: 11, render: (c) => <LetterPage {...c} /> },

@@ -77,8 +77,6 @@ export function Cover({
     onOpenStart();
     setPhase("pulling");
   }, [onOpenStart]);
-
-  // Start the cross-fade while the card is still gliding, so the hand-off has no dead pause.
   useEffect(() => {
     if (phase !== "pulling") return;
     const t = window.setTimeout(
@@ -242,14 +240,14 @@ export function Cover({
             )}
           </motion.div>
 
-          <motion.p
+          {/* <motion.p
             className="mt-5 flex items-center gap-2 text-eyebrow text-primary/70"
             initial={{ opacity: 0 }}
             animate={{ opacity: pull ? 0 : [0.35, 0.9, 0.35] }}
             transition={pull ? { duration: 0.4 } : { duration: 2.8, repeat: Infinity, delay: 1.8 }}
           >
             Vuốt lên để mở thiệp
-          </motion.p>
+          </motion.p> */}
         </>
       )}
     </motion.div>
