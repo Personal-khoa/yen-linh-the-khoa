@@ -167,7 +167,14 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
   const onReplay = useCallback(() => goTo(0), [goTo]);
 
   return (
-    <div className="story-shell" aria-roledescription="story" data-paused={!started}>
+    <motion.div
+      className="story-shell"
+      aria-roledescription="story"
+      data-paused={!started}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: started ? 1 : 0 }}
+      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+    >
       <Petals count={12} className="opacity-60" />
       <img
         src={bloom}
@@ -289,7 +296,7 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
           <ChevronRight className="size-5" />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
