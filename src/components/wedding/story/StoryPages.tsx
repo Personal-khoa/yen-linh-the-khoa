@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+﻿import { useEffect, useState, type ReactNode } from "react";
 import { motion, type TargetAndTransition, type Variants } from "motion/react";
 import { MapPin, RotateCcw } from "lucide-react";
 import logoAsset from "@/assets/logo-lk.webp";
@@ -79,28 +79,26 @@ function LetterPage({ visible, guest }: StoryCtx) {
       <Deco src={leafTop} visible={visible} className="-right-[2.4em] -top-[0.6em] w-[12em]" from={{ opacity: 0, x: 30, rotate: 8 }} />
       <Deco src={leafBottom} visible={visible} delay={0.5} className="-bottom-[1em] -left-[2.4em] w-[12em]" from={{ opacity: 0, x: -30, rotate: -8 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
-        <motion.div variants={pop} className="relative grid aspect-square w-[7.6em] place-items-center">
+        {/* <motion.div variants={pop} className="relative grid aspect-square w-[7.6em] place-items-center">
           <span className="absolute inset-0 rounded-full border border-gold/60" />
           <span className="absolute -inset-[0.7em] rounded-full border border-gold/25" />
           <img src={logoAsset} alt="Logo Yến Linh & Thế Khoa" className="relative w-[4.2em]" draggable={false} />
-        </motion.div>
-        <motion.p variants={rise} className="mt-[2.6em] text-eyebrow text-[0.7em] text-muted-foreground">
-          Trân trọng kính mời
-        </motion.p>
-        <motion.p variants={rise} className="mt-[0.2em] font-script text-[2.4em] leading-tight text-primary">
-          {guest ?? "Quý khách thân mến"}
+        </motion.div> */}
+        <motion.p variants={rise} className="mt-[0.2em] font-script text-[1.8em] leading-tight text-primary">
+          Gửi những người thân thương,
         </motion.p>
         <motion.div variants={rise} className="mt-[0.9em]">
           <Ornament />
         </motion.div>
-        <motion.p variants={rise} className="mt-[1.1em] text-[1.05em] leading-relaxed text-foreground/85">
-          Trong niềm hạnh phúc ngập tràn, gia đình chúng tôi trân trọng kính mời Quý khách tới dự bữa tiệc mừng{" "}
-          <em className="text-primary">lễ vu quy</em> của hai con – cùng chứng kiến và chúc phúc cho một khởi đầu mới.
+        <motion.p variants={rise} className="mt-[1.1em] text-[0.95em] leading-relaxed text-foreground/85">
+          Chúng con/Chúng mình- cô dâu Yến Linh và chú rể Thế Khoa- muốn gửi đến những người thân thương nhất lời mời trân quý cho ngày hạnh phúc của mình.
+          Sau những tháng ngày cùng nhau vun đắp, trải qua biết bao kỷ niệm và cảm xúc, chúng con/ chúng mình đã sẵn sàng bước sang một chương mới của cuộc đời.
+          Chúng con/Chúng mình mong được chia sẻ khoảnh khắc thiêng liêng và ý nghĩa này cùng những người thân yêu – những người đã luôn dõi theo, yêu thương và góp mặt trong hành trình trưởng thành của cả hai.
         </motion.p>
-        <motion.div variants={rise} className="mt-[1.3em] flex flex-col items-center text-primary">
-          <span className="font-names text-[2.5em] leading-[1.25]">{WEDDING.bride}</span>
-          <span className="font-script text-[1.5em] leading-none text-gold">&amp;</span>
-          <span className="font-names text-[2.5em] leading-[1.25]">{WEDDING.groom}</span>
+        <motion.div variants={rise} className="mt-[2.5em] flex flex-col items-center text-primary">
+          <span className="font-names text-[1.5em] leading-[1.25]">{WEDDING.bride} &amp; {WEDDING.groom}</span>
+          {/* <span className="font-script text-[1em] leading-none text-gold">&amp;</span>
+          <span className="font-names text-[1.5em] leading-[1.25]">{WEDDING.groom}</span> */}
         </motion.div>
       </motion.div>
       <motion.p
@@ -123,9 +121,9 @@ function DetailsPage({ visible }: StoryCtx) {
       <Deco src={leafTop} visible={visible} className="-right-[2em] -top-[0.4em] w-[10em]" imgClassName="animate-float-slow" from={{ opacity: 0, y: -20 }} />
       <Deco src={bloom} visible={visible} delay={0.6} className="-bottom-[0.6em] -left-[1.6em] w-[11em]" from={{ opacity: 0, x: -30, rotate: -6 }} />
       <motion.div variants={stagger} initial="hide" animate={visible ? "show" : "hide"} className={CONTENT}>
-        <motion.p variants={rise} className="text-eyebrow text-[0.66em] text-muted-foreground">
+        {/* <motion.p variants={rise} className="text-eyebrow text-[0.66em] text-muted-foreground">
           Save the date
-        </motion.p>
+        </motion.p> */}
         <motion.h2 variants={rise} className="font-script text-[3em] leading-tight text-primary">
           {WEDDING.ceremony}
         </motion.h2>
@@ -266,24 +264,42 @@ function FamilyPage({ visible }: StoryCtx) {
 }
 
 /* ---------- 4 · Album ---------- */
-type Photo = { src: string; alt: string; caption: string };
+type Photo = {
+  src: string;
+  alt: string;
+  caption: string;
+  kenBurns?: string;
+  /** Scale ảnh so với container — dùng để zoom out ảnh rộng hơn frame.
+   *  1.0 = mặc định (fill frame), 1.2 = ảnh 120% → zoom out để thấy nhiều hơn */
+  objectScale?: number;
+};
 export const PHOTOS: Photo[] = [
-  { src: pond, alt: "Cô dâu chú rể bên hồ sen", caption: "" },
-  { src: halong, alt: "Cô dâu chú rể trên đỉnh núi nhìn vịnh Hạ Long", caption: "" },
-  { src: hands, alt: "Đôi bàn tay với nhẫn cưới và đoá sen", caption: "" },
-  { src: aodai, alt: "Cô dâu chú rể trong áo dài đỏ", caption: "" },
-  { src: boat, alt: "Cô dâu chú rể trên thuyền giữa đầm sen", caption: "" },
-  { src: hall, alt: "Cô dâu chú rể trong sảnh vòm", caption: "" },
+  { src: pond,   alt: "Cô dâu chú rể bên hồ sen",                        caption: "" },
+  { src: halong, alt: "Cô dâu chú rể trên đỉnh núi nhìn vịnh Hạ Long",   caption: "" },
+  { src: hands,  alt: "Đôi bàn tay với nhẫn cưới và đoá sen",             caption: "" },
+  { src: aodai,  alt: "Cô dâu chú rể trong áo dài đỏ",                   caption: "" },
+  { src: boat,   alt: "Cô dâu chú rể trên thuyền giữa đầm sen",          caption: "" },
+  { src: hall,   alt: "Cô dâu chú rể trong sảnh vòm",                    caption: "", kenBurns: "wideLeft", objectScale: 0.75 },
 ];
 
-// Each photo moves differently: zoom out, pan, zoom in, drift, tilt, glide.
-const KEN_BURNS: { from: TargetAndTransition; to: TargetAndTransition }[] = [
-  { from: { scale: 1.22, y: "3%" }, to: { scale: 1.04, y: "-1%" } },
-  { from: { scale: 1.18, x: "5%", y: "2%" }, to: { scale: 1.08, x: "-3%", y: "-1%" } },
-  { from: { scale: 1.02 }, to: { scale: 1.22 } },
-  { from: { scale: 1.16, x: "-4%" }, to: { scale: 1.16, x: "4%" } },
-  { from: { scale: 1.26, rotate: -1.5 }, to: { scale: 1.06, rotate: 0.5 } },
-  { from: { scale: 1.12, y: "-4%" }, to: { scale: 1.12, y: "4%" } },
+// Named Ken Burns effects — reference by key in PHOTOS[].kenBurns
+type KenBurns = { from: TargetAndTransition; to: TargetAndTransition };
+const KB: Record<string, KenBurns> = {
+  zoomOut:    { from: { scale: 1.22, y: "3%" },              to: { scale: 1.04, y: "-1%" } },
+  panDiag:   { from: { scale: 1.18, x: "5%", y: "2%" },     to: { scale: 1.08, x: "-3%", y: "-1%" } },
+  zoomIn:    { from: { scale: 1.02 },                        to: { scale: 1.22 } },
+  panRight:  { from: { scale: 1.16, x: "-4%" },              to: { scale: 1.16, x: "4%" } },
+  panLeft:   { from: { scale: 1.16, x: "4%" },               to: { scale: 1.16, x: "-4%" } },
+  tilt:      { from: { scale: 1.26, rotate: -1.5 },          to: { scale: 1.06, rotate: 0.5 } },
+  panDown:   { from: { scale: 1.12, y: "-4%" },              to: { scale: 1.12, y: "4%" } },
+  panUp:     { from: { scale: 1.12, y: "4%" },               to: { scale: 1.12, y: "-4%" } },
+  wideRight: { from: { scale: 1.14, x: "-6%" },              to: { scale: 1.14, x: "6%" } },
+  wideLeft:  { from: { scale: 1.14, x: "6%" },               to: { scale: 1.14, x: "-8%" } },
+};
+
+// Fallback sequence khi photo không khai báo kenBurns
+const KEN_BURNS: KenBurns[] = [
+  KB.zoomOut!, KB.panDiag!, KB.zoomIn!, KB.panRight!, KB.tilt!, KB.panDown!,
 ];
 
 const CAPTION_IN: Variants[] = [
@@ -296,19 +312,29 @@ const CAPTION_IN: Variants[] = [
 ];
 
 function PhotoPage({ visible, photo, i, seconds }: StoryCtx & { photo: Photo; i: number; seconds: number }) {
-  const ken = KEN_BURNS[i % KEN_BURNS.length]!;
+  const baseKen = (photo.kenBurns ? KB[photo.kenBurns] : undefined) ?? KEN_BURNS[i % KEN_BURNS.length]!;
+  const os = photo.objectScale ?? 1;
+  const ken: KenBurns = {
+    from: { ...baseKen.from, scale: ((baseKen.from as { scale?: number }).scale ?? 1) * os },
+    to:   { ...baseKen.to,   scale: ((baseKen.to   as { scale?: number }).scale ?? 1) * os },
+  };
   const caption = CAPTION_IN[i % CAPTION_IN.length]!;
+  // objectScale < 1: zoom out để hiện full ảnh (object-contain), không crop
+  const fitMode = os < 1 ? "object-contain" : "object-cover";
   return (
     <div className="story-page bg-foreground">
-      <motion.img
-        src={photo.src}
-        alt={photo.alt}
-        draggable={false}
-        className="absolute inset-0 h-full w-full object-cover will-change-transform"
-        initial={ken.from}
-        animate={visible ? ken.to : { ...ken.from, transition: { duration: 0 } }}
-        transition={{ duration: seconds + 1.5, ease: "linear" }}
-      />
+      {/* Wrapper clips the Ken Burns motion — image never bleeds outside the frame */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.img
+          src={photo.src}
+          alt={photo.alt}
+          draggable={false}
+          className={`absolute inset-0 h-full w-full ${fitMode} will-change-transform`}
+          initial={ken.from}
+          animate={visible ? ken.to : { ...ken.from, transition: { duration: 0 } }}
+          transition={{ duration: seconds + 1.5, ease: "linear" }}
+        />
+      </div>
       <div className="absolute inset-0 bg-story-scrim" />
       <motion.div
         variants={stagger}
@@ -388,7 +414,7 @@ export function PageBack() {
 }
 
 const PHOTO_SECONDS = 6;
-const ALBUM_TITLE = "";
+const ALBUM_TITLE = "KHOẢNH KHẮC CHUNG ĐÔI";
 
 export const STORIES: Story[] = [
   { id: "loi-moi", label: "Lời mời", tone: "paper", seconds: 11, render: (c) => <LetterPage {...c} /> },
