@@ -4,8 +4,12 @@ import { routeTree } from "./routeTree.gen";
 
 export const queryClient = new QueryClient();
 
+// Must match VITE_BASE so TanStack Router strips the sub-path prefix correctly.
+const basepath = import.meta.env.BASE_URL ?? "/";
+
 export const router = createRouter({
   routeTree,
+  basepath,
   context: { queryClient },
   scrollRestoration: true,
   defaultPreloadStaleTime: 0,
