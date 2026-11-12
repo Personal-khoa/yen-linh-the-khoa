@@ -96,13 +96,19 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
     const seconds = STORIES[index]!.seconds;
     const remaining = Math.max(0.05, (1 - progress.get()) * seconds);
     let alive = true;
+    let holdTimer: ReturnType<typeof setTimeout> | undefined;
     const c = animate(progress, 1, { duration: remaining, ease: "linear" });
     c.then(() => {
-      if (alive && index < count - 1) goTo(index + 1);
+      if (!alive || index >= count - 1) return;
+      // Hold 2s after animation finishes before flipping to next page
+      holdTimer = setTimeout(() => {
+        if (alive) goTo(index + 1);
+      }, 1000);
     });
     return () => {
       alive = false;
       c.stop();
+      clearTimeout(holdTimer);
     };
   }, [started, flip, paused, holding, hidden, index, count, goTo, progress]);
 
@@ -112,14 +118,13 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
     return () => document.removeEventListener("visibilitychange", on);
   }, []);
 
-  // Preload album photos so a turned page never lands on an empty frame.
+  // Preload all photos on mount so they're ready before the story starts.
   useEffect(() => {
-    if (!started) return;
     PHOTOS.forEach((p) => {
       const img = new Image();
       img.src = p.src;
     });
-  }, [started]);
+  }, []);
 
   useEffect(() => {
     if (!started) return;
