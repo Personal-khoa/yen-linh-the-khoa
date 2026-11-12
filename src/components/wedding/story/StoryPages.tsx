@@ -279,7 +279,7 @@ export const PHOTOS: Photo[] = [
   { src: hands,  alt: "Đôi bàn tay với nhẫn cưới và đoá sen",             caption: "" },
   { src: aodai,  alt: "Cô dâu chú rể trong áo dài đỏ",                   caption: "" },
   { src: boat,   alt: "Cô dâu chú rể trên thuyền giữa đầm sen",          caption: "" },
-  { src: hall,   alt: "Cô dâu chú rể trong sảnh vòm",                    caption: "", kenBurns: "wideLeft", objectScale: 0.75 },
+  { src: hall,   alt: "Cô dâu chú rể trong sảnh vòm",                    caption: "", kenBurns: "wideLeft"},
 ];
 
 // Named Ken Burns effects — reference by key in PHOTOS[].kenBurns
