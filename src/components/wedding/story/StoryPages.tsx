@@ -14,7 +14,8 @@ import aodai from "@/assets/couple-ao-dai-red.jpg";
 import { WEDDING, getCountdown, type Countdown } from "../wedding-data";
 import { Ornament, Petals } from "../Petals";
 
-export type StoryCtx = { visible: boolean; guest?: string | undefined; onReplay: () => void };
+export type Pronoun = "chúng con" | "chúng mình";
+export type StoryCtx = { visible: boolean; guest?: string | undefined; onReplay: () => void; pronoun?: Pronoun };
 export type Story = {
   id: string;
   label: string;
@@ -72,7 +73,7 @@ function Deco({
 }
 
 /* ---------- 1 · Lời mời ---------- */
-function LetterPage({ visible, guest }: StoryCtx) {
+function LetterPage({ visible, guest, pronoun = "chúng con" }: StoryCtx) {
   return (
     <div className="story-page bg-paper">
       <Petals count={7} />
@@ -91,9 +92,9 @@ function LetterPage({ visible, guest }: StoryCtx) {
           <Ornament />
         </motion.div>
         <motion.p variants={rise} className="mt-[1.1em] text-[0.95em] leading-relaxed text-foreground/85">
-          Chúng con/Chúng mình- cô dâu Yến Linh và chú rể Thế Khoa- muốn gửi đến những người thân thương nhất lời mời trân quý cho ngày hạnh phúc của mình.
-          Sau những tháng ngày cùng nhau vun đắp, trải qua biết bao kỷ niệm và cảm xúc, chúng con/ chúng mình đã sẵn sàng bước sang một chương mới của cuộc đời.
-          Chúng con/Chúng mình mong được chia sẻ khoảnh khắc thiêng liêng và ý nghĩa này cùng những người thân yêu – những người đã luôn dõi theo, yêu thương và góp mặt trong hành trình trưởng thành của cả hai.
+          {pronoun.charAt(0).toUpperCase() + pronoun.slice(1)} – cô dâu Yến Linh và chú rể Thế Khoa – muốn gửi đến những người thân thương nhất lời mời trân quý cho ngày hạnh phúc của mình.
+          Sau những tháng ngày cùng nhau vun đắp, trải qua biết bao kỷ niệm và cảm xúc, {pronoun} đã sẵn sàng bước sang một chương mới của cuộc đời.{" "}
+          {pronoun.charAt(0).toUpperCase() + pronoun.slice(1)} mong được chia sẻ khoảnh khắc thiêng liêng và ý nghĩa này cùng những người thân yêu – những người đã luôn dõi theo, yêu thương và góp mặt trong hành trình trưởng thành của cả hai.
         </motion.p>
         <motion.div variants={rise} className="mt-[2.5em] flex flex-col items-center text-primary">
           <span className="font-names text-[1.5em] leading-[1.25]">{WEDDING.bride} &amp; {WEDDING.groom}</span>
@@ -416,18 +417,23 @@ export function PageBack() {
 const PHOTO_SECONDS = 6;
 const ALBUM_TITLE = "KHOẢNH KHẮC CHUNG ĐÔI";
 
-export const STORIES: Story[] = [
-  { id: "loi-moi", label: "Lời mời", tone: "paper", seconds: 11, render: (c) => <LetterPage {...c} /> },
-  { id: "hon-le", label: "Hôn lễ", tone: "paper", seconds: 13, render: (c) => <DetailsPage {...c} /> },
-  { id: "gia-dinh", label: "Hai gia đình", tone: "paper", seconds: 11, render: (c) => <FamilyPage {...c} /> },
-  ...PHOTOS.map(
-    (p, i): Story => ({
-      id: `anh-${i + 1}`,
-      label: ALBUM_TITLE,
-      tone: "photo",
-      seconds: PHOTO_SECONDS,
-      render: (c) => <PhotoPage {...c} photo={p} i={i} seconds={PHOTO_SECONDS} />,
-    }),
-  ),
-  { id: "cam-on", label: "Lời cảm ơn", tone: "paper", seconds: 12, render: (c) => <ThanksPage {...c} /> },
-];
+export function makeStories(pronoun: Pronoun): Story[] {
+  return [
+    { id: "loi-moi", label: "Lời mời", tone: "paper", seconds: 11, render: (c) => <LetterPage {...c} pronoun={pronoun} /> },
+    { id: "hon-le", label: "Hôn lễ", tone: "paper", seconds: 13, render: (c) => <DetailsPage {...c} /> },
+    { id: "gia-dinh", label: "Hai gia đình", tone: "paper", seconds: 11, render: (c) => <FamilyPage {...c} /> },
+    ...PHOTOS.map(
+      (p, i): Story => ({
+        id: `anh-${i + 1}`,
+        label: ALBUM_TITLE,
+        tone: "photo",
+        seconds: PHOTO_SECONDS,
+        render: (c) => <PhotoPage {...c} photo={p} i={i} seconds={PHOTO_SECONDS} />,
+      }),
+    ),
+    { id: "cam-on", label: "Lời cảm ơn", tone: "paper", seconds: 12, render: (c) => <ThanksPage {...c} /> },
+  ];
+}
+
+// Default: "chúng con" (Vietnamese standard)
+export const STORIES: Story[] = makeStories("chúng con");

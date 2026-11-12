@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import type React from "react";
 import {
   animate,
   motion,
@@ -13,7 +14,8 @@ import bloom from "@/assets/lotus-bloom.webp";
 import { WEDDING } from "../wedding-data";
 import { useMusic } from "../music";
 import { Petals } from "../Petals";
-import { PHOTOS, PageBack, STORIES } from "./StoryPages";
+import { PHOTOS as DEFAULT_PHOTOS, PageBack as DefaultPageBack, STORIES as DEFAULT_STORIES } from "./StoryPages";
+import type { Story } from "./StoryPages";
 import { FLIP_SECONDS, clampStep, gestureStep } from "./story-nav";
 
 type Flip = { from: number; to: number; dir: 1 | -1 };
@@ -21,7 +23,21 @@ type Role = "static" | "under" | "turn" | "idle";
 
 const isUi = (t: EventTarget | null) => t instanceof Element && !!t.closest("a,button,[data-story-ui]");
 
-export function StoryViewer({ started, guest }: { started: boolean; guest?: string | undefined }) {
+export function StoryViewer({
+  started,
+  guest,
+  stories = DEFAULT_STORIES,
+  photos = DEFAULT_PHOTOS,
+  PageBack = DefaultPageBack,
+}: {
+  started: boolean;
+  guest?: string | undefined;
+  stories?: Story[];
+  photos?: { src: string }[];
+  PageBack?: () => React.ReactElement;
+}) {
+  const STORIES = stories;
+  const PHOTOS = photos;
   const count = STORIES.length;
   const [index, setIndex] = useState(0);
   const [flip, setFlip] = useState<Flip | null>(null);
@@ -228,6 +244,7 @@ export function StoryViewer({ started, guest }: { started: boolean; guest?: stri
               backShade={backShade}
               backOpacity={backOpacity}
               underShadow={underShadow}
+              PageBack={PageBack}
             >
               {STORIES[i]!.render({ visible: visible(i), guest, onReplay })}
             </Leaf>
@@ -336,6 +353,7 @@ function Leaf({
   backShade,
   backOpacity,
   underShadow,
+  PageBack,
   children,
 }: {
   role: Role;
@@ -344,6 +362,7 @@ function Leaf({
   backShade: MotionValue<number>;
   backOpacity: MotionValue<number>;
   underShadow: MotionValue<number>;
+  PageBack: () => React.ReactElement;
   children: ReactNode;
 }) {
   const turning = role === "turn";
