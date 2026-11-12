@@ -341,12 +341,12 @@ function PhotoPage({ visible, photo, i, seconds }: StoryCtx & { photo: Photo; i:
         variants={stagger}
         initial="hide"
         animate={visible ? "show" : "hide"}
-        className="absolute inset-x-0 bottom-[3em] z-10 flex flex-col items-center px-[2em] text-center text-primary-foreground"
+        className="bottom-[3em] z-10 flex flex-col items-center px-[2em] text-center text-primary-foreground"
       >
         {/* <motion.p variants={rise} className="text-eyebrow text-[0.62em] opacity-85">
           {ALBUM_TITLE} · {String(i + 1).padStart(2, "0")} / {String(PHOTOS.length).padStart(2, "0")}
         </motion.p> */}
-        <motion.p
+        {/* <motion.p
           variants={{
             hide: { ...(caption["hide"] as object), transition: { duration: 0 } },
             show: { ...(caption["show"] as object), transition: { duration: 1.3, ease: EASE } },
@@ -354,7 +354,7 @@ function PhotoPage({ visible, photo, i, seconds }: StoryCtx & { photo: Photo; i:
           className="mt-[0.3em] font-script text-[2.8em] leading-tight"
         >
           {photo.caption}
-        </motion.p>
+        </motion.p> */}
         <motion.span variants={rise} className="mt-[0.5em] block gold-line w-[6em]" />
       </motion.div>
     </div>
