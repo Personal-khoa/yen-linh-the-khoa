@@ -6,6 +6,7 @@ import logoAsset from "@/assets/logo-lk.webp";
 import { AUTO_OPEN_MS, COVER_TIMING, WEDDING } from "./wedding-data";
 import { useMusic } from "./music";
 import { Petals } from "./Petals";
+import { PHOTOS } from "./story/StoryPages";
 
 type Phase = "idle" | "pulling" | "leaving";
 /** Slow grip, long glide, soft landing — like sliding a card out of a paper sleeve. */
@@ -18,7 +19,10 @@ function useAssetsReady(maxMs: number) {
   useEffect(() => {
     let alive = true;
     const done = () => alive && setReady(true);
-    const images = [coverSleeveAsset, logoAsset].map((src) => {
+    // Preload cover assets + first story photo so there's no red flash on handoff
+    const firstPhoto = PHOTOS[0]?.src;
+    const imageSrcs = [coverSleeveAsset, logoAsset, ...(firstPhoto ? [firstPhoto] : [])];
+    const images = imageSrcs.map((src) => {
       const img = new Image();
       img.src = src;
       return img.decode().catch(() => undefined);

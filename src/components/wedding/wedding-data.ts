@@ -27,7 +27,8 @@ export const COVER_TIMING = {
   /** Longest wait for the card artwork and fonts before showing the cover anyway. */
   maxWaitMs: 2600,
   pullMs: 1800,
-  revealAfterMs: 1350,
+  /** Wait for pull to finish (1800ms) + 1s pause to admire the card, then fade to story. */
+  revealAfterMs: 2800,
   fadeMs: 1000,
 } as const;
 
