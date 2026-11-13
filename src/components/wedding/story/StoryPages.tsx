@@ -298,7 +298,6 @@ const KB: Record<string, KenBurns> = {
   wideLeft:  { from: { scale: 1.14, x: "6%" },               to: { scale: 1.14, x: "-8%" } },
 };
 
-// Fallback sequence khi photo không khai báo kenBurns
 const KEN_BURNS: KenBurns[] = [
   KB.zoomOut!, KB.panDiag!, KB.zoomIn!, KB.panRight!, KB.tilt!, KB.panDown!,
 ];
