@@ -36,7 +36,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_BASE: /yen-linh-the-khoa/
+          VITE_BASE: /yen-linh-the-khoa-wedding-invitation/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
